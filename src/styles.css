@@ -307,3 +307,107 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 .gov-cta-bar { max-width: 1100px; margin: 0 48px 80px; padding: 28px 30px; border: 1px dashed var(--border); border-radius: 2px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .gov-cta-text { flex: 1; min-width: 220px; font-family: 'Cormorant Garamond', serif; font-size: 14.5px; color: var(--cream-dim); line-height: 1.5; }
 .gov-cta-text strong { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--gold); display: block; margin-bottom: 4px; font-weight: 600; }
+
+/* ── MOBILE HAMBURGER ────────────────────────────────────────────── */
+.nav-burger { display: none; background: transparent; border: none; cursor: pointer; padding: 6px; color: var(--cream-dim); }
+.nav-burger svg { display: block; }
+.nav-links { display: contents; }
+
+/* ── RESPONSIVE — MOBILE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  html, body { overflow-x: hidden; }
+
+  /* NAV */
+  .nav { padding: 0 14px; height: 50px; gap: 0; flex-wrap: nowrap; }
+  .logo { margin-right: auto; }
+  .logo-main { font-size: 15px; }
+  .logo-sub  { font-size: 8px; }
+  .nav-burger { display: block; order: 10; }
+  .nav-pill, .nav-btn { display: none; }
+  .nav-spacer { display: none; }
+
+  .nav-links {
+    display: none; position: fixed; top: 50px; left: 0; right: 0; z-index: 119;
+    background: rgba(15,12,7,0.97); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column; padding: 8px 0;
+  }
+  .nav-links.open { display: flex; }
+  .nav-link { padding: 12px 20px; font-size: 14px; border-bottom: 1px solid var(--border); }
+  .nav-link:last-child { border-bottom: none; }
+
+  /* PAGE WRAP — allow scroll on mobile */
+  .page { top: 50px; }
+
+  /* HOME — CONTROL BAR */
+  .ctrl-bar { padding: 0 10px; height: auto; min-height: 42px; flex-wrap: wrap; gap: 4px; padding-top: 6px; padding-bottom: 6px; }
+  .mode-btn { padding: 3px 8px; font-size: 11px; }
+  .ctrl-sep { display: none; }
+  .ctrl-spacer { display: none; }
+  .rotate-btn { display: none; }
+  #visitor-chips, #company-chips, #folk-chips { width: 100%; }
+  .chip { font-size: 10.5px; padding: 2px 7px; }
+
+  /* GLOBE */
+  .globe-wrap { top: 80px; }
+
+  /* SIDE PANELS — full-width on mobile */
+  .detail-panel, .folk-panel { width: 100% !important; right: 0; left: 0; top: 50px; }
+  .artist-panel { width: 100% !important; left: 0; right: 0; top: 50px; }
+
+  /* LEGEND */
+  .legend { bottom: 10px; padding: 5px 12px; gap: 8px; font-size: 10px; flex-wrap: wrap; justify-content: center; max-width: 95vw; }
+  .leg-hint { display: none; }
+  .leg-sep:last-of-type { display: none; }
+
+  /* HERO SECTIONS */
+  .page-hero { padding: 32px 18px 24px; }
+  .hero-title { font-size: 34px; }
+  .hero-sub { font-size: 15px; }
+  .hero-meta { flex-wrap: wrap; gap: 12px; }
+
+  /* FILTER ROW */
+  .filter-row { padding: 12px 18px; gap: 6px; }
+
+  /* CARD GRID */
+  .grid { padding: 20px 18px 60px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 18px; }
+  .card-cover { font-size: 48px; }
+  .card-title { font-size: 15px; }
+  .card-artist { font-size: 12px; }
+  .card-eyebrow { font-size: 9px; }
+  .card-row { font-size: 11px; }
+
+  /* WHITE TABLE */
+  .table-hero { padding: 32px 18px 20px; }
+  .table-title { font-size: 34px; }
+  .table-sub { font-size: 14px; }
+  .corkboard { padding: 24px 18px 60px; gap: 16px; justify-content: center; }
+  .post-it { width: 100%; max-width: 300px; }
+
+  /* GOVERNANCE */
+  .gov-hero { padding: 32px 18px 24px; }
+  .gov-hero .hero-title { font-size: 34px; }
+  .gov-stats { padding: 16px 18px; gap: 20px; }
+  .gov-stat-val { font-size: 22px; }
+  .gov-tabs { padding: 12px 18px 0; gap: 2px; overflow-x: auto; }
+  .gov-tab { font-size: 11.5px; padding: 8px 10px; white-space: nowrap; }
+  .proposals { padding: 18px 18px 60px; gap: 14px; }
+  .proposal { padding: 18px 16px; }
+  .prop-title { font-size: 18px; }
+  .prop-id { display: none; }
+  .prop-option-row { gap: 6px; }
+  .prop-option-name { font-size: 13px; }
+  .prop-option-pct { font-size: 11px; min-width: 40px; }
+  .prop-option-votes { font-size: 10px; min-width: 60px; }
+  .prop-foot { gap: 10px; font-size: 10px; }
+  .quorum-track { width: 60px; }
+  .gov-cta-bar { margin: 0 18px 60px; padding: 18px 16px; }
+  .gov-cta-text { min-width: 100%; }
+}
+
+/* ── RESPONSIVE — SMALL PHONES ───────────────────────────────────── */
+@media (max-width: 400px) {
+  .hero-title, .table-title, .gov-hero .hero-title { font-size: 28px; }
+  .grid { grid-template-columns: 1fr; }
+  .mode-btn { font-size: 10px; padding: 2px 6px; }
+}
