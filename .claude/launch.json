@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Hudson Records — Vite dev server (requires Node)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "Hudson Records — Python static server (no install)",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "5173"],
+      "port": 5173
+    }
+  ]
+}

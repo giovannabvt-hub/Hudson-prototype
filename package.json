@@ -1,0 +1,19 @@
+{
+  "name": "hudson-records",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Hudson Records — Global Folk Community website",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "globe.gl": "^2.34.4",
+    "topojson-client": "^3.1.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

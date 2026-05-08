@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hudson Records</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles.css">
+
+  <!-- Import map: lets the browser resolve `globe.gl` and `topojson-client`
+       as bare specifiers when served by a plain static server (no Node needed).
+       Vite ignores this and resolves from node_modules during `npm run dev`. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "globe.gl": "https://esm.sh/globe.gl@2.34.4",
+      "topojson-client": "https://esm.sh/topojson-client@3.1.0"
+    }
+  }
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="#home">
+    <span class="logo-main">Hudson Records</span>
+    <span class="logo-sub">Global Folk Community</span>
+  </a>
+  <a class="nav-link" href="#home" data-page="home">Home</a>
+  <a class="nav-link" href="#records" data-page="records">Records</a>
+  <a class="nav-link" href="#merch" data-page="merch">Merch</a>
+  <a class="nav-link" href="#table" data-page="table">White Table</a>
+  <a class="nav-link" href="#vote" data-page="vote">Governance</a>
+  <div class="nav-spacer"></div>
+  <span class="nav-pill"><span class="pill-dot"></span>184 members online</span>
+  <button class="nav-btn">Connect</button>
+</nav>
+
+<main id="app"></main>
+
+<!-- Floating overlays (only relevant on home page) -->
+<div class="tip" id="tip"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="dp-head">
+    <div class="dp-head-text">
+      <div class="dp-title" id="dp-title">—</div>
+      <div class="dp-sub" id="dp-sub"></div>
+    </div>
+    <button class="dp-close" id="dp-close">✕</button>
+  </div>
+  <div class="dp-body" id="dp-body"></div>
+  <div class="dp-audio" id="dp-audio" style="display:none;">
+    <button class="play-btn" id="play-btn">
+      <svg width="9" height="11" viewBox="0 0 9 11"><polygon points="0,0 9,5.5 0,11" fill="currentColor"/></svg>
+      Play regional sample
+    </button>
+    <canvas class="wave-canvas" id="wave-canvas" width="640" height="42"></canvas>
+  </div>
+</div>
+<div class="folk-panel" id="folk-panel">
+  <div class="fp-head">
+    <div class="fp-head-row">
+      <div class="fp-title">Folk Community</div>
+      <button class="fp-close" id="fp-close">✕</button>
+    </div>
+    <div class="fp-filter-row" id="fp-filter-row">
+      <span class="fp-chip on" data-fcat="event"><span class="fp-chip-dot" style="background:#1D9E75;"></span>Events</span>
+      <span class="fp-chip on" data-fcat="community"><span class="fp-chip-dot" style="background:#EF9F27;"></span>Gatherings</span>
+      <span class="fp-chip on" data-fcat="record"><span class="fp-chip-dot" style="background:#7F77DD;"></span>Records</span>
+      <span class="fp-chip on" data-fcat="product"><span class="fp-chip-dot" style="background:#D85A30;"></span>Products</span>
+    </div>
+  </div>
+  <div class="fp-body" id="fp-body"></div>
+  <button class="fp-new-thread">+ Start a new discussion</button>
+</div>
+<div class="artist-panel" id="artist-panel">
+  <div class="panel-head"><div class="panel-head-title">Folk Artists</div></div>
+  <div class="panel-body" id="artist-list"></div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
