@@ -22,14 +22,27 @@ const TEMPLATE = `
       <span class="chip on" data-cat="gathering"><span class="chip-dot" style="background:#5C3A1E;"></span>Gatherings</span>
     </div>
     <div class="ctrl-spacer"></div>
+    <button class="disc-list-toggle" id="disc-list-toggle">List View</button>
     <button class="rotate-btn on" id="rotate-btn">Auto-rotate</button>
   </div>
-  <div class="globe-wrap"><div id="globe-el"></div></div>
+
+  <div class="disc-layout">
+    <div class="globe-wrap"><div id="globe-el"></div></div>
+
+    <aside class="disc-sidebar" id="disc-sidebar">
+      <div class="disc-sidebar-head">
+        <h3 class="disc-sidebar-title">All Offerings</h3>
+        <span class="disc-sidebar-count" id="disc-sidebar-count">0</span>
+      </div>
+      <div class="disc-sidebar-list" id="disc-sidebar-list"></div>
+    </aside>
+  </div>
+
   <div class="legend">
     <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#8B6842"/></svg> Event</div>
     <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#5C3A1E"/></svg> Gathering</div>
     <div class="leg-sep"></div>
-    <span class="leg-hint">drag -- scroll -- click a marker</span>
+    <span class="leg-hint">drag -- scroll -- click a marker or label</span>
   </div>
 `;
 
@@ -49,6 +62,7 @@ function refreshGlobe() {
   if (!globeApi) return;
   globeApi.setCapColor(countryFill);
   const data = visibleOfferings();
+
   globeApi.setMarkers({
     data,
     ringColor: d => t => {
@@ -61,7 +75,77 @@ function refreshGlobe() {
     ringPropagationSpeed: 2.4,
     ringRepeatPeriod: 1600,
     pointColor: d => catColors[d.category] || '#8B6842',
-    pointRadius: 0.22,
+    pointRadius: 0.32,
+  });
+
+  // Add text labels on the globe
+  globeApi.setLabels({
+    data,
+    onLabelClick: d => showCountryDetail(d.country),
+  });
+
+  // Update sidebar list
+  renderSidebar(data);
+}
+
+function renderSidebar(data) {
+  const list = document.getElementById('disc-sidebar-list');
+  const count = document.getElementById('disc-sidebar-count');
+  if (!list || !count) return;
+
+  count.textContent = data.length;
+
+  // Group by country
+  const grouped = {};
+  data.forEach(o => {
+    if (!grouped[o.country]) grouped[o.country] = [];
+    grouped[o.country].push(o);
+  });
+
+  const countries = Object.keys(grouped).sort();
+
+  list.innerHTML = countries.map(country => {
+    const items = grouped[country];
+    return `
+      <div class="disc-country-group">
+        <div class="disc-country-name" data-country="${country}">${country} <span class="disc-country-badge">${items.length}</span></div>
+        ${items.map(o => {
+          const catClass = o.category === 'event' ? 'disc-cat-event' : 'disc-cat-gathering';
+          const artist = artists.find(a => a.id === o.artist);
+          return `
+            <div class="disc-item" data-country="${o.country}">
+              <div class="disc-item-bar ${catClass}"></div>
+              <div class="disc-item-body">
+                <div class="disc-item-type ${catClass}">${o.category}</div>
+                <div class="disc-item-title">${o.title}</div>
+                <div class="disc-item-meta">${o.member} -- ${o.date} -- ${o.price}</div>
+                <div class="disc-item-desc">${o.desc}</div>
+                ${artist ? `<button class="disc-item-artist" data-artist="${artist.id}">${artist.name} ></button>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }).join('');
+
+  // Bind country group clicks -> open detail panel
+  list.querySelectorAll('.disc-country-name').forEach(el => {
+    el.addEventListener('click', () => showCountryDetail(el.dataset.country));
+  });
+
+  // Bind item clicks -> open detail panel for that country
+  list.querySelectorAll('.disc-item').forEach(el => {
+    el.addEventListener('click', () => showCountryDetail(el.dataset.country));
+  });
+
+  // Bind artist links
+  list.querySelectorAll('.disc-item-artist').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.__folkable_artist = btn.dataset.artist;
+      go('artists');
+    });
   });
 }
 
@@ -80,12 +164,14 @@ function showCountryDetail(name) {
   } else {
     dpBody.innerHTML = offs.map(o => {
       const artist = artists.find(a => a.id === o.artist);
+      const catClass = o.category === 'event' ? 'disc-cat-event' : 'disc-cat-gathering';
       return `
       <div class="offering-card">
         <div class="o-bar" style="background:${catColors[o.category]};"></div>
         <div style="flex:1;min-width:0;">
+          <div class="o-cat-tag ${catClass}">${o.category}</div>
           <div class="o-title">${o.title}</div>
-          <div class="o-meta">${o.member} -- ${o.category} -- ${o.date} -- ${o.price}</div>
+          <div class="o-meta">${o.member} -- ${o.date} -- ${o.price}</div>
           <div class="o-desc">${o.desc}</div>
           ${artist ? `<button class="o-artist-link" data-artist="${artist.id}">${artist.name} ></button>` : ''}
         </div>
@@ -130,6 +216,21 @@ export function mount(root) {
     if (globeApi) globeApi.setRotate(state.rotate);
   });
 
+  // List view toggle (sidebar)
+  document.getElementById('disc-list-toggle').addEventListener('click', function() {
+    const sidebar = document.getElementById('disc-sidebar');
+    sidebar.classList.toggle('open');
+    this.classList.toggle('on');
+    this.textContent = sidebar.classList.contains('open') ? 'Globe View' : 'List View';
+    // Re-render globe size after sidebar toggle
+    setTimeout(() => {
+      const el = document.getElementById('globe-el');
+      if (globeApi && el) {
+        globeApi.setRotate && window.dispatchEvent(new Event('resize'));
+      }
+    }, 350);
+  });
+
   // Detail close
   document.getElementById('dp-close').addEventListener('click', () => document.getElementById('detail-panel').classList.remove('open'));
 
@@ -152,13 +253,19 @@ export function mount(root) {
         const n = p.properties.name;
         if (countryFill(n) === BASE_FILL) { tip.style.opacity = '0'; return; }
         const cnt = offerings.filter(o => o.country === n && state.cats.has(o.category)).length;
-        tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${n}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${cnt} offering${cnt!==1?'s':''}</span>`;
+        const evts = offerings.filter(o => o.country === n && o.category === 'event' && state.cats.has('event')).length;
+        const gths = offerings.filter(o => o.country === n && o.category === 'gathering' && state.cats.has('gathering')).length;
+        let details = [];
+        if (evts) details.push(`${evts} event${evts!==1?'s':''}`);
+        if (gths) details.push(`${gths} gathering${gths!==1?'s':''}`);
+        tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${n}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${details.join(', ')}</span>`;
         tip.style.opacity = '1';
       },
       onPolygonClick: p => showCountryDetail(p.properties.name),
       onPointHover: p => {
         if (!p) { tip.style.opacity = '0'; return; }
-        tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${p.title}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${p.member} -- ${p.country}</span>`;
+        const catLabel = p.category === 'event' ? 'Event' : 'Gathering';
+        tip.innerHTML = `<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:${catColors[p.category]};margin-bottom:3px;">${catLabel}</div><strong style="font-family:'Playfair Display',serif;">${p.title}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${p.member} -- ${p.country}</span><br><span style="font-size:11px;color:rgba(232,220,200,0.42);">${p.date} -- ${p.price}</span>`;
         tip.style.opacity = '1';
       },
       onPointClick: d => showCountryDetail(d.country),

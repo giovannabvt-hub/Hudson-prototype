@@ -4,7 +4,7 @@ import * as topojson from 'topojson-client';
 
 let globe = null;
 
-export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPointClick }) {
+export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPointClick, onLabelClick }) {
   globe = Globe()(el)
     .width(el.clientWidth)
     .height(el.clientHeight)
@@ -51,6 +51,18 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
         .pointResolution(10)
         .onPointHover(onPointHover)
         .onPointClick(onPointClick);
+    },
+    setLabels({ data, onLabelClick }) {
+      globe.labelsData(data)
+        .labelLat('lat').labelLng('lng')
+        .labelText('title')
+        .labelSize(d => d.category === 'event' ? 0.7 : 0.6)
+        .labelDotRadius(0.3)
+        .labelColor(d => d.category === 'event' ? () => 'rgba(184,134,11,0.92)' : () => 'rgba(139,104,66,0.88)')
+        .labelDotOrientation(() => 'bottom')
+        .labelResolution(3)
+        .labelAltitude(0.018)
+        .onLabelClick(onLabelClick || (() => {}));
     },
     setRotate(b) { globe.controls().autoRotate = b; },
   };
