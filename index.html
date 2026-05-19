@@ -3,15 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hudson Records</title>
+  <title>FolkAble</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/styles.css">
 
-  <!-- Import map: lets the browser resolve `globe.gl` and `topojson-client`
-       as bare specifiers when served by a plain static server (no Node needed).
-       Vite ignores this and resolves from node_modules during `npm run dev`. -->
   <script type="importmap">
   {
     "imports": {
@@ -25,35 +22,60 @@
 
 <nav class="nav">
   <a class="logo" href="#home">
-    <span class="logo-main">Hudson Records</span>
-    <span class="logo-sub">Global Folk Community</span>
+    <span class="logo-main"><span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span></span>
   </a>
   <div class="nav-links" id="nav-links">
     <a class="nav-link" href="#home" data-page="home">Home</a>
-    <a class="nav-link" href="#records" data-page="records">Records</a>
-    <a class="nav-link" href="#merch" data-page="merch">Merch</a>
-    <a class="nav-link" href="#table" data-page="table">White Table</a>
-    <a class="nav-link" href="#vote" data-page="vote">Governance</a>
+    <a class="nav-link" href="#story" data-page="story">Story</a>
+    <a class="nav-link" href="#discovery" data-page="discovery">Discovery</a>
+    <a class="nav-link" href="#artists" data-page="artists">Artists</a>
+    <a class="nav-link" href="#companies" data-page="companies">Companies</a>
+    <a class="nav-link" href="#community" data-page="community">Community</a>
+    <a class="nav-link" href="#roundtable" data-page="roundtable">Round Table</a>
   </div>
   <div class="nav-spacer"></div>
-  <span class="nav-pill"><span class="pill-dot"></span>184 members online</span>
-  <button class="nav-btn">Connect</button>
+  <button class="nav-auth-btn" id="auth-open">Log In / Sign Up</button>
   <button class="nav-burger" id="nav-burger" aria-label="Menu">
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 6h14M4 11h14M4 16h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
   </button>
 </nav>
 
+<!-- Auth modal -->
+<div class="auth-modal" id="auth-modal">
+  <div class="auth-card">
+    <button class="auth-close" id="auth-close">&times;</button>
+    <h2 class="auth-title">Join <span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span></h2>
+    <p class="auth-sub">Register or log in to participate in the community.</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-atab="login">Log In</button>
+      <button class="auth-tab" data-atab="signup">Sign Up</button>
+    </div>
+    <form class="auth-form" id="auth-form" onsubmit="return false;">
+      <input class="auth-input" type="email" placeholder="Email" required>
+      <input class="auth-input" type="password" placeholder="Password" required>
+      <div class="auth-role" id="auth-role" style="display:none;">
+        <label class="auth-role-label">I am a:</label>
+        <div class="auth-role-opts">
+          <label class="auth-role-opt"><input type="radio" name="role" value="user" checked> Listener / Supporter</label>
+          <label class="auth-role-opt"><input type="radio" name="role" value="creator"> Creator / Artist / Label</label>
+        </div>
+      </div>
+      <button class="landing-btn primary auth-submit" type="submit">Log In</button>
+    </form>
+  </div>
+</div>
+
 <main id="app"></main>
 
-<!-- Floating overlays (only relevant on home page) -->
+<!-- Floating overlays (discovery page) -->
 <div class="tip" id="tip"></div>
 <div class="detail-panel" id="detail-panel">
   <div class="dp-head">
     <div class="dp-head-text">
-      <div class="dp-title" id="dp-title">—</div>
+      <div class="dp-title" id="dp-title">&mdash;</div>
       <div class="dp-sub" id="dp-sub"></div>
     </div>
-    <button class="dp-close" id="dp-close">✕</button>
+    <button class="dp-close" id="dp-close">&times;</button>
   </div>
   <div class="dp-body" id="dp-body"></div>
   <div class="dp-audio" id="dp-audio" style="display:none;">
@@ -64,36 +86,36 @@
     <canvas class="wave-canvas" id="wave-canvas" width="640" height="42"></canvas>
   </div>
 </div>
-<div class="folk-panel" id="folk-panel">
-  <div class="fp-head">
-    <div class="fp-head-row">
-      <div class="fp-title">Folk Community</div>
-      <button class="fp-close" id="fp-close">✕</button>
-    </div>
-    <div class="fp-filter-row" id="fp-filter-row">
-      <span class="fp-chip on" data-fcat="event"><span class="fp-chip-dot" style="background:#1D9E75;"></span>Events</span>
-      <span class="fp-chip on" data-fcat="community"><span class="fp-chip-dot" style="background:#EF9F27;"></span>Gatherings</span>
-      <span class="fp-chip on" data-fcat="record"><span class="fp-chip-dot" style="background:#7F77DD;"></span>Records</span>
-      <span class="fp-chip on" data-fcat="product"><span class="fp-chip-dot" style="background:#D85A30;"></span>Products</span>
-    </div>
-  </div>
-  <div class="fp-body" id="fp-body"></div>
-  <button class="fp-new-thread">+ Start a new discussion</button>
-</div>
-<div class="artist-panel" id="artist-panel">
-  <div class="panel-head"><div class="panel-head-title">Folk Artists</div></div>
-  <div class="panel-body" id="artist-list"></div>
-</div>
 
 <script>
-  // Mobile hamburger menu toggle
+  // Hamburger
   document.getElementById('nav-burger').addEventListener('click', function() {
     document.getElementById('nav-links').classList.toggle('open');
   });
-  // Close menu when a nav link is clicked
   document.querySelectorAll('.nav-link').forEach(function(link) {
     link.addEventListener('click', function() {
       document.getElementById('nav-links').classList.remove('open');
+    });
+  });
+
+  // Auth modal
+  document.getElementById('auth-open').addEventListener('click', function() {
+    document.getElementById('auth-modal').classList.add('open');
+  });
+  document.getElementById('auth-close').addEventListener('click', function() {
+    document.getElementById('auth-modal').classList.remove('open');
+  });
+  document.getElementById('auth-modal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+  // Tab switching
+  document.querySelectorAll('.auth-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.auth-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var isSignup = tab.dataset.atab === 'signup';
+      document.getElementById('auth-role').style.display = isSignup ? 'block' : 'none';
+      document.querySelector('.auth-submit').textContent = isSignup ? 'Create Account' : 'Log In';
     });
   });
 </script>

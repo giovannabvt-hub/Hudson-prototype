@@ -8,13 +8,13 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
   globe = Globe()(el)
     .width(el.clientWidth)
     .height(el.clientHeight)
-    .backgroundColor('#14110a')
+    .backgroundColor('#0f0d08')
     .showAtmosphere(true)
-    .atmosphereColor('#FAC775')
+    .atmosphereColor('#c9a84c')
     .atmosphereAltitude(0.18)
     .pointOfView({ lat: 26, lng: 8, altitude: 2.4 });
 
-  globe.globeMaterial().color.set('#3a2616');
+  globe.globeMaterial().color.set('#2a1f12');
   globe.controls().autoRotate = true;
   globe.controls().autoRotateSpeed = 0.42;
   globe.controls().enableDamping = true;
@@ -26,8 +26,8 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
     .then(world => {
       const features = topojson.feature(world, world.objects.countries).features;
       globe.polygonsData(features)
-        .polygonSideColor(() => 'rgba(74,40,24,0.12)')
-        .polygonStrokeColor(() => 'rgba(250,199,117,0.16)')
+        .polygonSideColor(() => 'rgba(42,31,18,0.15)')
+        .polygonStrokeColor(() => 'rgba(201,168,76,0.14)')
         .polygonAltitude(0.005)
         .onPolygonHover(onPolygonHover)
         .onPolygonClick(onPolygonClick);

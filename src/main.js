@@ -1,23 +1,24 @@
-// Entry point: create one persistent container per page, mount each, then start the router.
-// (CSS is loaded via <link> in index.html so this works in plain browsers + Vite.)
-
+// FolkAble — Entry point
 import * as home       from './pages/home.js';
-import * as records    from './pages/records.js';
-import * as merch      from './pages/merch.js';
-import * as table      from './pages/table.js';
-import * as governance from './pages/governance.js';
+import * as story      from './pages/story.js';
+import * as discovery  from './pages/discovery.js';
+import * as artists    from './pages/artists.js';
+import * as companies  from './pages/companies.js';
+import * as community  from './pages/community.js';
+import * as roundtable from './pages/roundtable.js';
 
 import { register, start } from './lib/router.js';
 
 const app = document.getElementById('app');
 
-// Build one section per page and mount each module once
 const PAGES = [
-  { name: 'home',    id: 'page-home',    mod: home },
-  { name: 'records', id: 'page-records', mod: records },
-  { name: 'merch',   id: 'page-merch',   mod: merch },
-  { name: 'table',   id: 'page-table',   mod: table },
-  { name: 'vote',    id: 'page-vote',    mod: governance },
+  { name: 'home',       id: 'page-home',       mod: home },
+  { name: 'story',      id: 'page-story',      mod: story },
+  { name: 'discovery',  id: 'page-discovery',  mod: discovery },
+  { name: 'artists',    id: 'page-artists',    mod: artists },
+  { name: 'companies',  id: 'page-companies',  mod: companies },
+  { name: 'community',  id: 'page-community',  mod: community },
+  { name: 'roundtable', id: 'page-roundtable', mod: roundtable },
 ];
 
 const sections = {};
@@ -27,17 +28,15 @@ PAGES.forEach(({ name, id, mod }) => {
   section.id = id;
   app.appendChild(section);
   sections[name] = section;
-  // mount the page once into its own container
   mod.mount(section);
 });
 
-// Router: just toggle the active section
 PAGES.forEach(({ name, mod }) => {
   register(name, {
     onEnter: () => {
       Object.values(sections).forEach(s => s.classList.remove('active'));
       sections[name].classList.add('active');
-      // home has overlays that need clearing when leaving — handle via onLeave on home
+      if (mod.onEnter) mod.onEnter();
     },
     onLeave: () => {
       if (mod.unmount) mod.unmount();
