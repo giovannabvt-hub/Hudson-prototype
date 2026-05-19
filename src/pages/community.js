@@ -44,7 +44,7 @@ function render() {
         <div class="comm-messages" id="comm-messages">
           ${channel.messages.map(m => `
             <div class="comm-msg">
-              <div class="comm-msg-avatar">${m.avatar}</div>
+              <div class="comm-msg-avatar avatar-bronze">${m.avatar}</div>
               <div class="comm-msg-body">
                 <div class="comm-msg-head">
                   <span class="comm-msg-author">${m.author}</span>

@@ -6,6 +6,7 @@ const TEMPLATE = `
   <section class="landing-hero">
     <div class="landing-hero-bg"></div>
     <div class="landing-hero-content">
+      <img src="/logo.png" alt="FolkAble" style="width:120px;height:auto;margin:0 auto 24px;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5));">
       <h1 class="landing-title"><span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span></h1>
       <p class="landing-tagline">A decentralised platform connecting folk communities across the globe.</p>
       <p class="landing-desc">Discover events, support artists, join gatherings, and shape the future of folk music through collective governance. Built by musicians, for musicians.</p>

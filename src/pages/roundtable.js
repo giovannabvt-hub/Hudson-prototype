@@ -7,9 +7,14 @@ let root = null;
 const TEMPLATE = `
   <div class="page-scroll">
     <div class="gov-hero">
-      <div class="hero-eyebrow">Governance · Round Table</div>
-      <h1 class="hero-title">Vote<em> together</em></h1>
-      <p class="hero-sub">FolkAble is run by its members. Events, budgets, onboarding — every meaningful decision passes through the Round Table. One member, one vote.</p>
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+        <img src="/roundtable-bg.png" alt="Round Table" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,162,77,0.3);box-shadow:0 4px 16px rgba(0,0,0,0.4);">
+        <div>
+          <div class="hero-eyebrow">Governance · Round Table</div>
+          <h1 class="hero-title">Vote<em> together</em></h1>
+        </div>
+      </div>
+      <p class="hero-sub" style="margin-top:18px;">FolkAble is run by its members. Events, budgets, onboarding — every meaningful decision passes through the Round Table. One member, one vote.</p>
     </div>
 
     <div class="gov-stats">

@@ -18,23 +18,23 @@ const TEMPLATE = `
     <span class="ctrl-label">Discovery</span>
     <div class="ctrl-sep"></div>
     <div id="disc-chips" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
-      <span class="chip on" data-cat="event"><span class="chip-dot" style="background:#c9a84c;"></span>Events</span>
-      <span class="chip on" data-cat="gathering"><span class="chip-dot" style="background:#3d6b4f;"></span>Gatherings</span>
+      <span class="chip on" data-cat="event"><span class="chip-dot" style="background:#C9A24D;"></span>Events</span>
+      <span class="chip on" data-cat="gathering"><span class="chip-dot" style="background:#1E7F5C;"></span>Gatherings</span>
     </div>
     <div class="ctrl-spacer"></div>
     <button class="rotate-btn on" id="rotate-btn">&#x27F3; Auto-rotate</button>
   </div>
   <div class="globe-wrap"><div id="globe-el"></div></div>
   <div class="legend">
-    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#c9a84c"/></svg> Event</div>
-    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#3d6b4f"/></svg> Gathering</div>
+    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#C9A24D"/></svg> Event</div>
+    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#1E7F5C"/></svg> Gathering</div>
     <div class="leg-sep"></div>
     <span class="leg-hint">drag · scroll · click a marker</span>
   </div>
 `;
 
-const BASE_FILL = 'rgba(60,48,30,0.40)';
-const RAMP = ['rgba(201,168,76,0.35)','rgba(201,168,76,0.52)','rgba(212,168,67,0.68)','rgba(201,168,76,0.85)'];
+const BASE_FILL = 'rgba(15,61,46,0.25)';
+const RAMP = ['rgba(30,127,92,0.35)','rgba(201,162,77,0.50)','rgba(201,162,77,0.65)','rgba(201,162,77,0.82)'];
 
 function countryFill(name) {
   const n = offerings.filter(o => o.country === name && state.cats.has(o.category)).length;

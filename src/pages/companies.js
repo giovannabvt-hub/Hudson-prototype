@@ -17,7 +17,7 @@ function renderCatalogue() {
       <div class="company-grid">
         ${companies.map(c => `
           <div class="company-card" data-cid="${c.id}">
-            <div class="cc-logo" style="background:${c.color}20;border-color:${c.color}40;">${c.logo}</div>
+            <div class="cc-logo avatar-bronze" style="background:linear-gradient(145deg, ${c.color}20, ${c.color}08);border-color:${c.color}40;">${c.logo}</div>
             <div class="cc-info">
               <div class="cc-name">${c.name}</div>
               <div class="cc-meta">${c.location} · Est. ${c.founded}</div>
@@ -49,7 +49,7 @@ function renderCompany() {
       <div class="micro-hero">
         <button class="micro-back" id="company-back">&larr; All Companies</button>
         <div class="micro-header">
-          <div class="micro-avatar" style="background:${c.color}20;border-color:${c.color}40;">${c.logo}</div>
+          <div class="micro-avatar avatar-bronze" style="background:linear-gradient(145deg, ${c.color}20, ${c.color}08);border-color:${c.color}40;">${c.logo}</div>
           <div class="micro-info">
             <h1 class="micro-name">${c.name}</h1>
             <div class="micro-meta">${c.location} · Founded ${c.founded} · ${c.members} members</div>

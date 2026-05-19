@@ -26,18 +26,19 @@ export const offerings = [
 ];
 
 export const companies = [
-  { id:'hudson',name:'Hudson Records',color:'#c9a84c',logo:'🏔️',
-    bio:'Founded in 2018 in the Hudson Valley, New York, Hudson Records is a community-driven folk label dedicated to preserving and amplifying traditional music from around the world. From vinyl pressings to live sessions, they champion independent artists and authentic sound.',
-    founded:'2018',location:'Hudson Valley, NY',members:42,
+  { id:'hudson',name:'Hudson Records',color:'#C9A24D',logo:'⚜',
+    bio:'Founded in 2016 in Sheffield, Yorkshire, Hudson Records is an independent record label specialising in folk, indie and world music. Their mission is to create an artist-led, sustainable ecosystem that prioritises creativity, community, and ethical business practices.',
+    founded:'2016',location:'Sheffield, Yorkshire',members:42,
     articles:[
-      {title:'Why We Chose Analogue',date:'2026-04-15',excerpt:'In a world of digital convenience, we doubled down on vinyl...'},
-      {title:'Atlas Compilation: Call for Submissions',date:'2026-05-01',excerpt:'Our annual compilation is open. This year\'s theme will be chosen by governance vote...'},
+      {title:'Hudson Club: A New Way to Support Folk',date:'2026-04-15',excerpt:'Our Bandcamp subscription community brings listeners closer to the artists they love...'},
+      {title:'Hudson Presents: Live Season Announced',date:'2026-05-01',excerpt:'Our concert series returns with an expanded programme of folk, indie and world music...'},
+      {title:'Hudson Unearth: Emerging Talent Open Call',date:'2026-03-20',excerpt:'Our emerging talent initiative is now accepting submissions from new folk artists worldwide...'},
     ],
-    releases:['Galway Sessions Vol. 3','Forró de Caju','Atlas Compilation 2026'],
+    releases:['Dominion of Spells','Shamming The Drama','Windblown','The Little Winters'],
     events:['Celtic Connections Session','Bordeaux Folk Gathering','Budapest Táncház Camp'],
-    socials:{website:'https://hudsonrecords.com',instagram:'@hudsonrecords',twitter:'@hudsonrec'}
+    socials:{website:'https://hudsonrecords.co.uk',instagram:'@hudsonrecords',twitter:'@hudsonrec'}
   },
-  { id:'sruth',name:'Sruth Records',color:'#8b7ec8',logo:'🌊',
+  { id:'sruth',name:'Sruth Records',color:'#8b7ec8',logo:'⚜',
     bio:'Sruth (Irish for "stream") is a boutique folk label from Galway, Ireland, specialising in traditional Irish music. Every release is pressed on vinyl with hand-designed sleeves.',
     founded:'2020',location:'Galway, Ireland',members:12,
     articles:[{title:'Vol. 3 Sold Out in 11 Days',date:'2026-05-05',excerpt:'We did not expect this. Thank you to every member who supported the pressing...'}],
@@ -45,7 +46,7 @@ export const companies = [
     events:['Galway Sessions Listening Party'],
     socials:{website:'https://sruthrecords.ie',instagram:'@sruthrecords'}
   },
-  { id:'casa',name:'Casa do Fado',color:'#d4a843',logo:'🎶',
+  { id:'casa',name:'Casa do Fado',color:'#d4a843',logo:'⚜',
     bio:'A Lisbon-based collective preserving the art of Portuguese fado. Casa do Fado hosts weekly performances and produces recordings of both traditional and contemporary fado.',
     founded:'2019',location:'Lisbon, Portugal',members:18,
     articles:[{title:'Fado Evenings Return to Alfama',date:'2026-04-20',excerpt:'After renovation, our casa reopens with an expanded programme...'}],
@@ -53,7 +54,7 @@ export const companies = [
     events:['Fado de Alfama','Peña Flamenca'],
     socials:{website:'https://casadofado.pt',instagram:'@casadofado'}
   },
-  { id:'vestland',name:'Vestland Folk',color:'#3d6b4f',logo:'🌲',
+  { id:'vestland',name:'Vestland Folk',color:'#3d6b4f',logo:'⚜',
     bio:'Based in Bergen, Norway, Vestland Folk champions Scandinavian traditional music. From hardanger fiddle workshops to Arctic festivals, they connect Nordic folk traditions with the wider world.',
     founded:'2017',location:'Bergen, Norway',members:28,
     articles:[{title:'Arctic Folk Summit 2026 Announced',date:'2026-03-10',excerpt:'Three days above the Arctic Circle. Tromsø, August 1-3...'}],
@@ -61,7 +62,7 @@ export const companies = [
     events:['Hardanger Fiddle Camp','Balkan Brass Meetup','Arctic Folk Summit','Nordic Fiddle Gathering'],
     socials:{website:'https://vestlandfolk.no',instagram:'@vestlandfolk'}
   },
-  { id:'hollow',name:'Hollow Holler Records',color:'#a0522d',logo:'🪕',
+  { id:'hollow',name:'Hollow Holler Records',color:'#a0522d',logo:'⚜',
     bio:'From the hills of Tennessee, Hollow Holler Records documents the living tradition of Appalachian music. Small-batch vinyl and 7" pressings only.',
     founded:'2021',location:'Asheville, NC',members:15,
     articles:[{title:'7" Series Year Two',date:'2026-04-01',excerpt:'The quarterly series continues. Each release: 300 copies, one take, no overdubs...'}],
@@ -69,7 +70,7 @@ export const companies = [
     events:['Banjo Tuning Course'],
     socials:{website:'https://hollowholler.com',instagram:'@hollowholler'}
   },
-  { id:'pampa',name:'Pampa Folk',color:'#7a9ec2',logo:'🌾',
+  { id:'pampa',name:'Pampa Folk',color:'#7a9ec2',logo:'⚜',
     bio:'A Buenos Aires collective bridging South American folk traditions — chamamé, vallenato, son jarocho — with contemporary audiences. They organise Latin American folk tours and co-produce albums.',
     founded:'2020',location:'Buenos Aires, Argentina',members:22,
     articles:[{title:'Latin American Folk Circuit 2026',date:'2026-05-08',excerpt:'Six countries, twelve cities. The circuit launches in September...'}],
@@ -77,7 +78,7 @@ export const companies = [
     events:['Chamamé Sunday','Son Jarocho Fandango','Vallenato Cumbia Night'],
     socials:{website:'https://pampafolk.ar',instagram:'@pampafolk'}
   },
-  { id:'eastern',name:'Eastern Routes',color:'#c27a7a',logo:'🧭',
+  { id:'eastern',name:'Eastern Routes',color:'#c27a7a',logo:'⚜',
     bio:'Eastern Routes connects folk traditions of Asia, North Africa, and the Middle East with global audiences. They produce albums, organise masterclasses, and coordinate cultural exchanges.',
     founded:'2019',location:'Marrakech / Tokyo',members:20,
     articles:[{title:'Gnawa-Koto Collaboration Announced',date:'2026-05-12',excerpt:'Maâlem Hamid and Yuki Nakashima enter the studio together this autumn...'}],
@@ -93,7 +94,7 @@ export const companyMap = {
 };
 
 export const artists = [
-  { id:'aoife',emoji:'🎻',name:'Aoife Brennan',age:34,country:'Ireland',instrument:'Fiddle & Banjo',
+  { id:'aoife',emoji:'♦',name:'Aoife Brennan',age:34,country:'Ireland',instrument:'Fiddle & Banjo',
     bio:'Born in County Clare, Aoife has played traditional Irish music since age six. She has performed at Fleadh Cheoil na hÉireann four times and released three albums with Sruth Records. Her playing bridges the gap between the old session traditions and a new generation of listeners.',
     products:['Galway Sessions Vol. 3 (vinyl)','The Banjo Notebooks (book)','Tour Hoodie 2026'],
     events:['Tuesday Trad Session','Banjo Tuning Course','Celtic Connections Session','Limerick Fiddle Week'],
@@ -105,7 +106,7 @@ export const artists = [
     socials:{instagram:'@aoifebrennan_trad',spotify:'Aoife Brennan',youtube:'AoifeBrennanMusic',website:'https://aoifebrennan.ie'},
     supporters:847, label:'Sruth Records'
   },
-  { id:'santiago',emoji:'🪗',name:'Santiago Vera',age:42,country:'Argentina',instrument:'Bandoneón & Guitar',
+  { id:'santiago',emoji:'♦',name:'Santiago Vera',age:42,country:'Argentina',instrument:'Bandoneón & Guitar',
     bio:'Santiago grew up in the Litoral region deeply influenced by chamamé. He has toured across Latin America and collaborated with Parisian tango orchestras. His music carries the weight of the pampas and the joy of the river towns.',
     products:['Reseda (LP)','La Pampa Vive (EP)','Pampa Tour Tote'],
     events:['Chamamé Sunday','Son Jarocho Fandango','Vallenato Cumbia Night'],
@@ -116,7 +117,7 @@ export const artists = [
     socials:{instagram:'@santiagoveramusic',spotify:'Santiago Vera',website:'https://santiagovera.com.ar'},
     supporters:612, label:'Pampa Folk'
   },
-  { id:'yuki',emoji:'🎵',name:'Yuki Nakashima',age:28,country:'Japan',instrument:'Shamisen & Koto',
+  { id:'yuki',emoji:'♦',name:'Yuki Nakashima',age:28,country:'Japan',instrument:'Shamisen & Koto',
     bio:'Yuki studied at the Tokyo University of the Arts under master shamisen player Kenji Inoue. She blends traditional Japanese court music with folk influences from across Asia. Her album "Ma" explores the spaces between notes.',
     products:['Ma — Silence Between Notes (album)'],
     events:['Shamisen Workshop','Baul Songs of Bengal'],
@@ -127,7 +128,7 @@ export const artists = [
     socials:{instagram:'@yuki_shamisen',spotify:'Yuki Nakashima',youtube:'YukiNakashimaMusic'},
     supporters:523, label:'Eastern Routes'
   },
-  { id:'clara',emoji:'🎼',name:'Clara Monteiro',age:31,country:'Portugal',instrument:'Classical Guitar & Voice',
+  { id:'clara',emoji:'♦',name:'Clara Monteiro',age:31,country:'Portugal',instrument:'Classical Guitar & Voice',
     bio:'Born in Lisbon and raised between Portugal and Brazil, Clara blends the melancholy of fado with the rhythmic joy of forró. Her voice carries the saudade of the Atlantic — the longing for home that never quite arrives.',
     products:['Saudade do Norte (LP)','Alfama Notebooks (songbook)'],
     events:['Fado de Alfama','Peña Flamenca','Forró Pé de Serra','Bordeaux Folk Gathering'],
@@ -138,7 +139,7 @@ export const artists = [
     socials:{instagram:'@claramonteiro_fado',spotify:'Clara Monteiro',website:'https://claramonteiro.pt'},
     supporters:1034, label:'Casa do Fado'
   },
-  { id:'erik',emoji:'🎻',name:'Erik Lindström',age:45,country:'Sweden',instrument:'Nyckelharpa & Hardanger Fiddle',
+  { id:'erik',emoji:'♦',name:'Erik Lindström',age:45,country:'Sweden',instrument:'Nyckelharpa & Hardanger Fiddle',
     bio:'Erik is a craftsman and musician from Uppsala who both builds and plays the nyckelharpa. He leads workshops across Scandinavia and has spent three decades preserving Nordic fiddle traditions through performance and instrument-making.',
     products:['Nordmark (LP)','Hand-built nyckelharpa','The Keyed Fiddle Guide (book)'],
     events:['Hardanger Fiddle Camp','Balkan Brass Meetup','Arctic Folk Summit','Budapest Táncház Camp','Nordic Fiddle Gathering'],
@@ -149,7 +150,7 @@ export const artists = [
     socials:{instagram:'@eriklindstrom_folk',website:'https://eriklindstrom.se'},
     supporters:391, label:'Vestland Folk'
   },
-  { id:'hamid',emoji:'🥁',name:'Maâlem Hamid Qadiri',age:58,country:'Morocco',instrument:'Guembri & Voice',
+  { id:'hamid',emoji:'♦',name:'Maâlem Hamid Qadiri',age:58,country:'Morocco',instrument:'Guembri & Voice',
     bio:'Maâlem Hamid is a master of the Gnawa spiritual tradition, based in Fez. Initiated at fifteen, he has performed lila ceremonies for four decades. His music is prayer — rhythmic, trance-inducing, ancient.',
     products:['Lila (live recording)','Colours of the Guembri (LP)','Gnawa Krakeb (pair)'],
     events:['Gnawa Lila','Kora Masterclass','Atlas Mountain Moussem'],
@@ -163,42 +164,42 @@ export const artists = [
 ];
 
 export const communityChannels = [
-  { id:'general', name:'General', emoji:'🌍', description:'Open discussion for all FolkAble members', members: 184,
+  { id:'general', name:'General', emoji:'✦', description:'Open discussion for all FolkAble members', members: 184,
     messages:[
-      {author:'Hudson Records',avatar:'🏔️',time:'2m ago',text:'Welcome to the new FolkAble community platform! Explore, connect, and share.'},
-      {author:'Aoife Brennan',avatar:'🎻',time:'15m ago',text:'Just finished recording the last track for Vol. 4. Cannot wait to share it with everyone.'},
-      {author:'Erik Lindström',avatar:'🎻',time:'28m ago',text:'Anyone heading to the Arctic Folk Summit? Let\'s coordinate travel.'},
-      {author:'Clara Monteiro',avatar:'🎼',time:'1h ago',text:'The Bordeaux gathering was beautiful. Photos coming soon.'},
-      {author:'Santiago Vera',avatar:'🪗',time:'1h ago',text:'New chamamé arrangements uploaded to my page. Feedback welcome!'},
-      {author:'Maâlem Hamid',avatar:'🥁',time:'2h ago',text:'The lila recording session in Fez was transcendent. More details on my profile.'},
-      {author:'Yuki Nakashima',avatar:'🎵',time:'3h ago',text:'Excited about the Europe tour. Eight cities! Thank you for the governance vote.'},
+      {author:'Hudson Records',avatar:'✦',time:'2m ago',text:'Welcome to the new FolkAble community platform! Explore, connect, and share.'},
+      {author:'Aoife Brennan',avatar:'✦',time:'15m ago',text:'Just finished recording the last track for Vol. 4. Cannot wait to share it with everyone.'},
+      {author:'Erik Lindström',avatar:'✦',time:'28m ago',text:'Anyone heading to the Arctic Folk Summit? Let\'s coordinate travel.'},
+      {author:'Clara Monteiro',avatar:'✦',time:'1h ago',text:'The Bordeaux gathering was beautiful. Photos coming soon.'},
+      {author:'Santiago Vera',avatar:'✦',time:'1h ago',text:'New chamamé arrangements uploaded to my page. Feedback welcome!'},
+      {author:'Maâlem Hamid',avatar:'✦',time:'2h ago',text:'The lila recording session in Fez was transcendent. More details on my profile.'},
+      {author:'Yuki Nakashima',avatar:'✦',time:'3h ago',text:'Excited about the Europe tour. Eight cities! Thank you for the governance vote.'},
     ]
   },
-  { id:'events', name:'Events & Gatherings', emoji:'📅', description:'Coordinate and discuss upcoming events', members: 128,
+  { id:'events', name:'Events & Gatherings', emoji:'✧', description:'Coordinate and discuss upcoming events', members: 128,
     messages:[
-      {author:'Vestland Folk',avatar:'🌲',time:'5m ago',text:'Arctic Folk Summit tickets go live next week. Member pre-sale starts Monday.'},
-      {author:'Coletivo Pifaneiros',avatar:'🌾',time:'20m ago',text:'Forró night this Saturday in Salvador. Two accordion spots still open.'},
-      {author:'Le Cercle Folk',avatar:'🎶',time:'45m ago',text:'June gathering programme is finalised. Jazz manouche workshop added!'},
-      {author:'Tánchaz Egyesület',avatar:'💃',time:'1h ago',text:'Dance partner matching for Budapest camp is now live on the portal.'},
+      {author:'Vestland Folk',avatar:'✦',time:'5m ago',text:'Arctic Folk Summit tickets go live next week. Member pre-sale starts Monday.'},
+      {author:'Coletivo Pifaneiros',avatar:'✦',time:'20m ago',text:'Forró night this Saturday in Salvador. Two accordion spots still open.'},
+      {author:'Le Cercle Folk',avatar:'✦',time:'45m ago',text:'June gathering programme is finalised. Jazz manouche workshop added!'},
+      {author:'Tánchaz Egyesület',avatar:'✦',time:'1h ago',text:'Dance partner matching for Budapest camp is now live on the portal.'},
     ]
   },
-  { id:'production', name:'Production & Recording', emoji:'🎙️', description:'Talk recording, mixing, mastering, vinyl', members: 67,
+  { id:'production', name:'Production & Recording', emoji:'♫', description:'Talk recording, mixing, mastering, vinyl', members: 67,
     messages:[
-      {author:'Sruth Records',avatar:'🌊',time:'10m ago',text:'Anyone have experience pressing on 180g vs 140g? Quality difference worth the cost?'},
-      {author:'Hollow Holler Records',avatar:'🪕',time:'30m ago',text:'Our 7" lathe cuts are done. Hand-numbered, shipping next week.'},
-      {author:'Eastern Routes',avatar:'🧭',time:'1h ago',text:'The gnawa-koto collab session starts in September. Studio in Marrakech confirmed.'},
+      {author:'Sruth Records',avatar:'✦',time:'10m ago',text:'Anyone have experience pressing on 180g vs 140g? Quality difference worth the cost?'},
+      {author:'Hollow Holler Records',avatar:'✦',time:'30m ago',text:'Our 7" lathe cuts are done. Hand-numbered, shipping next week.'},
+      {author:'Eastern Routes',avatar:'✦',time:'1h ago',text:'The gnawa-koto collab session starts in September. Studio in Marrakech confirmed.'},
     ]
   },
-  { id:'instruments', name:'Instruments & Craft', emoji:'🪕', description:'Luthiers, instrument makers, and collectors', members: 43,
+  { id:'instruments', name:'Instruments & Craft', emoji:'♩', description:'Luthiers, instrument makers, and collectors', members: 43,
     messages:[
-      {author:'Erik Lindström',avatar:'🎻',time:'15m ago',text:'New nyckelharpa build log up on my profile. This one uses spruce instead of maple.'},
-      {author:'Taller del Sur',avatar:'🥁',time:'1h ago',text:'Cedar cajón workshop in Sevilla, June 7. Five spots remaining.'},
+      {author:'Erik Lindström',avatar:'✦',time:'15m ago',text:'New nyckelharpa build log up on my profile. This one uses spruce instead of maple.'},
+      {author:'Taller del Sur',avatar:'✦',time:'1h ago',text:'Cedar cajón workshop in Sevilla, June 7. Five spots remaining.'},
     ]
   },
-  { id:'marketplace', name:'Marketplace', emoji:'🏪', description:'Buy, sell, and trade folk items', members: 89,
+  { id:'marketplace', name:'Marketplace', emoji:'✦', description:'Buy, sell, and trade folk items', members: 89,
     messages:[
-      {author:'Santiago Vera',avatar:'🪗',time:'3h ago',text:'1960s bandoneón for sale. Excellent condition. Serious players only.'},
-      {author:'Aoife Brennan',avatar:'🎻',time:'5h ago',text:'Tour hoodies restocked! New embroidered design.'},
+      {author:'Santiago Vera',avatar:'✦',time:'3h ago',text:'1960s bandoneón for sale. Excellent condition. Serious players only.'},
+      {author:'Aoife Brennan',avatar:'✦',time:'5h ago',text:'Tour hoodies restocked! New embroidered design.'},
     ]
   },
 ];

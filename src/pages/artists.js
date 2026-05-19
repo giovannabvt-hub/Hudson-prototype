@@ -17,7 +17,7 @@ function renderCatalogue() {
       <div class="artist-grid">
         ${artists.map(a => `
           <div class="artist-card" data-aid="${a.id}">
-            <div class="ac-avatar">${a.emoji}</div>
+            <div class="ac-avatar avatar-bronze">${a.emoji}</div>
             <div class="ac-info">
               <div class="ac-name">${a.name}</div>
               <div class="ac-detail">${a.instrument}</div>
@@ -49,7 +49,7 @@ function renderProfile() {
       <div class="micro-hero">
         <button class="micro-back" id="micro-back">&larr; All Artists</button>
         <div class="micro-header">
-          <div class="micro-avatar">${a.emoji}</div>
+          <div class="micro-avatar avatar-bronze">${a.emoji}</div>
           <div class="micro-info">
             <h1 class="micro-name">${a.name}</h1>
             <div class="micro-meta">${a.instrument} · ${a.country} · Age ${a.age}</div>
