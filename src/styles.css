@@ -56,7 +56,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 .comm-ch-icon { flex-shrink: 0; width: 16px; height: 16px; }
 
 /* ── LOGO IMAGE ──────────────────────────────────────────────────── */
-.logo-img { height: 36px; width: auto; margin-right: 10px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); mix-blend-mode: screen; }
+.logo-img { height: 36px; width: auto; margin-right: 10px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
 
 /* ── NAV ──────────────────────────────────────────────────────────── */
 .nav {
