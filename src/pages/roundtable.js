@@ -82,7 +82,7 @@ function renderProposals() {
         <div class="${cls}" data-pid="${p.id}" data-oi="${i}">
           <div class="prop-option-fill" style="width:${pct}%;"></div>
           <div class="prop-option-row">
-            <span class="prop-option-name">${o.label}${userVote === i ? ' &nbsp;✓' : ''}${o.winner ? ' &nbsp;★' : ''}</span>
+            <span class="prop-option-name">${o.label}${userVote === i ? ' [voted]' : ''}${o.winner ? ' [winner]' : ''}</span>
             <span class="prop-option-pct">${pct.toFixed(1)}%</span>
             <span class="prop-option-votes">${o.votes} votes</span>
           </div>
@@ -113,7 +113,7 @@ function renderProposals() {
           <span class="quorum-bar">
             Quorum
             <span class="quorum-track"><span class="quorum-fill ${quorumMet ? 'met' : ''}" style="width:${quorumPct}%;"></span></span>
-            <strong>${total} / ${p.quorum}</strong>${quorumMet ? ' &nbsp;✓' : ''}
+            <strong>${total} / ${p.quorum}</strong>${quorumMet ? ' [met]' : ''}
           </span>
           <span>Closes in <strong>${p.closes}</strong></span>
           ${isClosed

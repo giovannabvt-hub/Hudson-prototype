@@ -1,5 +1,5 @@
 // FolkAble — Community page (Discord-style chat)
-import { communityChannels, artists } from '../data/index.js';
+import { communityChannels, artists, sectionSymbols, artistSymbols } from '../data/index.js';
 
 let mounted = false;
 let activeChannel = 'general';
@@ -19,7 +19,7 @@ function render() {
           <div class="comm-ch-label">Channels</div>
           ${communityChannels.map(ch => `
             <button class="comm-ch-btn ${ch.id === activeChannel ? 'active' : ''}" data-ch="${ch.id}">
-              <span class="comm-ch-emoji">${ch.emoji}</span>
+              <span class="comm-ch-icon bronze-symbol-sm">${sectionSymbols[ch.symbolKey] || ''}</span>
               <span class="comm-ch-name">${ch.name}</span>
               <span class="comm-ch-count">${ch.members}</span>
             </button>
@@ -27,7 +27,7 @@ function render() {
           <div class="comm-ch-label" style="margin-top:16px;">Artist Channels</div>
           ${artists.map(a => `
             <button class="comm-ch-btn artist-ch" data-artist="${a.id}">
-              <span class="comm-ch-emoji">${a.emoji}</span>
+              <span class="comm-ch-icon bronze-symbol-sm">${artistSymbols[a.id] || ''}</span>
               <span class="comm-ch-name">${a.name.split(' ')[0]}</span>
             </button>
           `).join('')}
@@ -36,7 +36,7 @@ function render() {
 
       <main class="comm-main">
         <div class="comm-main-head">
-          <span class="comm-main-emoji">${channel.emoji}</span>
+          <span class="comm-main-icon bronze-symbol">${sectionSymbols[channel.symbolKey] || ''}</span>
           <h3 class="comm-main-title">${channel.name}</h3>
           <span class="comm-main-desc">${channel.description}</span>
           <span class="comm-main-members">${channel.members} members</span>
@@ -79,24 +79,24 @@ function render() {
       const main = root.querySelector('.comm-main');
       main.innerHTML = `
         <div class="comm-main-head">
-          <span class="comm-main-emoji">${a.emoji}</span>
+          <span class="comm-main-icon bronze-symbol">${artistSymbols[a.id] || ''}</span>
           <h3 class="comm-main-title">${a.name}</h3>
           <span class="comm-main-desc">Artist community channel</span>
           <span class="comm-main-members">${Math.floor(a.supporters * 0.05)} online</span>
         </div>
         <div class="comm-messages">
           <div class="comm-msg">
-            <div class="comm-msg-avatar">${a.emoji}</div>
+            <div class="comm-msg-avatar avatar-bronze">${a.name[0]}</div>
             <div class="comm-msg-body">
               <div class="comm-msg-head"><span class="comm-msg-author">${a.name}</span><span class="comm-msg-time">pinned</span></div>
-              <p class="comm-msg-text">Welcome to my channel! This is a space for my supporters to connect, discuss my music, and stay updated on upcoming events.</p>
+              <p class="comm-msg-text">Welcome to my channel. This is a space for my supporters to connect, discuss my music, and stay updated on upcoming events.</p>
             </div>
           </div>
           <div class="comm-msg">
-            <div class="comm-msg-avatar">🎵</div>
+            <div class="comm-msg-avatar avatar-bronze">S</div>
             <div class="comm-msg-body">
               <div class="comm-msg-head"><span class="comm-msg-author">Supporter</span><span class="comm-msg-time">2h ago</span></div>
-              <p class="comm-msg-text">Excited for the next release! Any preview available?</p>
+              <p class="comm-msg-text">Excited for the next release. Any preview available?</p>
             </div>
           </div>
         </div>

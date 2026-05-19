@@ -1,7 +1,32 @@
 // FolkAble — Story page (About Hudson Records & mission)
+import { companySymbols } from '../data/index.js';
+
 let mounted = false;
 
-const TEMPLATE = `
+const networkLabels = [
+  { id:'hudson',  name:'Hudson Records',       loc:'Sheffield, Yorkshire', est:'2016' },
+  { id:'sruth',   name:'Sruth Records',         loc:'Galway, Ireland',      est:'2020' },
+  { id:'casa',    name:'Casa do Fado',           loc:'Lisbon, Portugal',     est:'2019' },
+  { id:'vestland',name:'Vestland Folk',          loc:'Bergen, Norway',       est:'2017' },
+  { id:'hollow',  name:'Hollow Holler Records',  loc:'Asheville, NC',        est:'2021' },
+  { id:'pampa',   name:'Pampa Folk',             loc:'Buenos Aires, Argentina', est:'2020' },
+  { id:'eastern', name:'Eastern Routes',         loc:'Marrakech / Tokyo',    est:'2019' },
+];
+
+export function mount(root) {
+  if (mounted) return;
+
+  const networkHtml = networkLabels.map(l => `
+    <div class="sn-item">
+      <span class="sn-icon bronze-symbol">${companySymbols[l.id] || ''}</span>
+      <div>
+        <strong>${l.name}</strong>
+        <span>${l.loc} -- Est. ${l.est}</span>
+      </div>
+    </div>
+  `).join('');
+
+  root.innerHTML = `
 <div class="page-scroll">
   <section class="story-hero">
     <span class="landing-eyebrow">The Story</span>
@@ -23,7 +48,7 @@ const TEMPLATE = `
       <div class="story-label">Philosophy</div>
       <h2 class="story-h2">An Artist-Led Ecosystem</h2>
       <p>Hudson Records set out to create an artist-led, sustainable ecosystem that prioritises creativity, community, and ethical business practices. Beyond a traditional label, they built a network encompassing international distribution, artist management, production support, and publishing.</p>
-      <p>As Karine Polwart has said of Hudson: "They're more than simply a record company. They're invested in a vibrant ecosystem of collaborative making -- illustrators and designers, filmmakers and podcasters." That spirit of collaborative making became the seed for something larger.</p>
+      <p>That spirit of collaborative making became the seed for something larger.</p>
     </div>
   </section>
 
@@ -66,13 +91,7 @@ const TEMPLATE = `
       <div class="story-label">The Network</div>
       <h2 class="story-h2">7 Labels, 18 Countries, One Community</h2>
       <div class="story-network">
-        <div class="sn-item"><span class="sn-emoji">⚜</span><strong>Hudson Records</strong><span>Sheffield, Yorkshire · Est. 2016</span></div>
-        <div class="sn-item"><span class="sn-emoji">⚜</span><strong>Sruth Records</strong><span>Galway, Ireland · Est. 2020</span></div>
-        <div class="sn-item"><span class="sn-emoji">⚜</span><strong>Casa do Fado</strong><span>Lisbon, Portugal · Est. 2019</span></div>
-        <div class="sn-item"><span class="sn-emoji">⚜</span><strong>Vestland Folk</strong><span>Bergen, Norway · Est. 2017</span></div>
-        <div class="sn-item"><span class="sn-emoji">⚜</span><strong>Hollow Holler Records</strong><span>Asheville, NC · Est. 2021</span></div>
-        <div class="sn-item"><span class="sn-emoji">⚜</span><strong>Pampa Folk</strong><span>Buenos Aires, Argentina · Est. 2020</span></div>
-        <div class="sn-item"><span class="sn-emoji">⚜</span><strong>Eastern Routes</strong><span>Marrakech / Tokyo · Est. 2019</span></div>
+        ${networkHtml}
       </div>
     </div>
   </section>
@@ -90,10 +109,6 @@ const TEMPLATE = `
   </section>
 </div>
 `;
-
-export function mount(root) {
-  if (mounted) return;
-  root.innerHTML = TEMPLATE;
   mounted = true;
 }
 

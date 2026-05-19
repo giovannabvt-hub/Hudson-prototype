@@ -1,10 +1,14 @@
 // FolkAble — Companies page (label catalogue + individual pages)
-import { companies, offerings, catColors } from '../data/index.js';
+import { companies, offerings, catColors, companySymbols } from '../data/index.js';
 
 let mounted = false;
 let currentView = 'catalogue';
 let selectedCompany = null;
 let root = null;
+
+function getSymbol(id) {
+  return companySymbols[id] || '';
+}
 
 function renderCatalogue() {
   root.innerHTML = `
@@ -17,10 +21,10 @@ function renderCatalogue() {
       <div class="company-grid">
         ${companies.map(c => `
           <div class="company-card" data-cid="${c.id}">
-            <div class="cc-logo avatar-bronze" style="background:linear-gradient(145deg, ${c.color}20, ${c.color}08);border-color:${c.color}40;">${c.logo}</div>
+            <div class="cc-logo avatar-bronze" style="background:linear-gradient(145deg, ${c.color}20, ${c.color}08);border-color:${c.color}40;"><span class="bronze-symbol">${getSymbol(c.id)}</span></div>
             <div class="cc-info">
               <div class="cc-name">${c.name}</div>
-              <div class="cc-meta">${c.location} · Est. ${c.founded}</div>
+              <div class="cc-meta">${c.location} -- Est. ${c.founded}</div>
               <div class="cc-meta">${c.members} members</div>
               <p class="cc-bio">${c.bio.substring(0, 120)}...</p>
             </div>
@@ -47,12 +51,12 @@ function renderCompany() {
   root.innerHTML = `
     <div class="page-scroll">
       <div class="micro-hero">
-        <button class="micro-back" id="company-back">&larr; All Companies</button>
+        <button class="micro-back" id="company-back">< All Companies</button>
         <div class="micro-header">
-          <div class="micro-avatar avatar-bronze" style="background:linear-gradient(145deg, ${c.color}20, ${c.color}08);border-color:${c.color}40;">${c.logo}</div>
+          <div class="micro-avatar avatar-bronze" style="background:linear-gradient(145deg, ${c.color}20, ${c.color}08);border-color:${c.color}40;"><span class="bronze-symbol">${getSymbol(c.id)}</span></div>
           <div class="micro-info">
             <h1 class="micro-name">${c.name}</h1>
-            <div class="micro-meta">${c.location} · Founded ${c.founded} · ${c.members} members</div>
+            <div class="micro-meta">${c.location} -- Founded ${c.founded} -- ${c.members} members</div>
           </div>
         </div>
         <div class="micro-actions">
@@ -89,7 +93,7 @@ function renderCompany() {
                 <div class="o-bar" style="background:${catColors[o.category]};"></div>
                 <div style="flex:1;min-width:0;">
                   <div class="o-title">${o.title}</div>
-                  <div class="o-meta">${o.country} · ${o.date} · ${o.price}</div>
+                  <div class="o-meta">${o.country} -- ${o.date} -- ${o.price}</div>
                   <div class="o-desc">${o.desc}</div>
                 </div>
               </div>

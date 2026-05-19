@@ -10,7 +10,7 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
     .height(el.clientHeight)
     .backgroundColor('#0A0E0B')
     .showAtmosphere(true)
-    .atmosphereColor('#1E7F5C')
+    .atmosphereColor('#8B6842')
     .atmosphereAltitude(0.20)
     .pointOfView({ lat: 26, lng: 8, altitude: 2.4 });
 

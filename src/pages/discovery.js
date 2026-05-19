@@ -18,23 +18,23 @@ const TEMPLATE = `
     <span class="ctrl-label">Discovery</span>
     <div class="ctrl-sep"></div>
     <div id="disc-chips" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
-      <span class="chip on" data-cat="event"><span class="chip-dot" style="background:#C9A24D;"></span>Events</span>
-      <span class="chip on" data-cat="gathering"><span class="chip-dot" style="background:#1E7F5C;"></span>Gatherings</span>
+      <span class="chip on" data-cat="event"><span class="chip-dot" style="background:#8B6842;"></span>Events</span>
+      <span class="chip on" data-cat="gathering"><span class="chip-dot" style="background:#5C3A1E;"></span>Gatherings</span>
     </div>
     <div class="ctrl-spacer"></div>
-    <button class="rotate-btn on" id="rotate-btn">&#x27F3; Auto-rotate</button>
+    <button class="rotate-btn on" id="rotate-btn">Auto-rotate</button>
   </div>
   <div class="globe-wrap"><div id="globe-el"></div></div>
   <div class="legend">
-    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#C9A24D"/></svg> Event</div>
-    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#1E7F5C"/></svg> Gathering</div>
+    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#8B6842"/></svg> Event</div>
+    <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#5C3A1E"/></svg> Gathering</div>
     <div class="leg-sep"></div>
-    <span class="leg-hint">drag · scroll · click a marker</span>
+    <span class="leg-hint">drag -- scroll -- click a marker</span>
   </div>
 `;
 
 const BASE_FILL = 'rgba(15,61,46,0.25)';
-const RAMP = ['rgba(30,127,92,0.35)','rgba(201,162,77,0.50)','rgba(201,162,77,0.65)','rgba(201,162,77,0.82)'];
+const RAMP = ['rgba(92,58,30,0.35)','rgba(139,104,66,0.50)','rgba(139,104,66,0.65)','rgba(184,134,11,0.82)'];
 
 function countryFill(name) {
   const n = offerings.filter(o => o.country === name && state.cats.has(o.category)).length;
@@ -52,15 +52,15 @@ function refreshGlobe() {
   globeApi.setMarkers({
     data,
     ringColor: d => t => {
-      const base = catColors[d.category] || '#c9a84c';
-      const hex = base.startsWith('#') ? base : '#c9a84c';
+      const base = catColors[d.category] || '#8B6842';
+      const hex = base.startsWith('#') ? base : '#8B6842';
       const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
       return `rgba(${r},${g},${b},${(1-t)})`;
     },
     ringMaxRadius: 2.6,
     ringPropagationSpeed: 2.4,
     ringRepeatPeriod: 1600,
-    pointColor: d => catColors[d.category] || '#c9a84c',
+    pointColor: d => catColors[d.category] || '#8B6842',
     pointRadius: 0.22,
   });
 }
@@ -85,9 +85,9 @@ function showCountryDetail(name) {
         <div class="o-bar" style="background:${catColors[o.category]};"></div>
         <div style="flex:1;min-width:0;">
           <div class="o-title">${o.title}</div>
-          <div class="o-meta">${o.member} · ${o.category} · ${o.date} · ${o.price}</div>
+          <div class="o-meta">${o.member} -- ${o.category} -- ${o.date} -- ${o.price}</div>
           <div class="o-desc">${o.desc}</div>
-          ${artist ? `<button class="o-artist-link" data-artist="${artist.id}">${artist.emoji} ${artist.name} &rarr;</button>` : ''}
+          ${artist ? `<button class="o-artist-link" data-artist="${artist.id}">${artist.name} ></button>` : ''}
         </div>
       </div>
     `}).join('');
@@ -158,7 +158,7 @@ export function mount(root) {
       onPolygonClick: p => showCountryDetail(p.properties.name),
       onPointHover: p => {
         if (!p) { tip.style.opacity = '0'; return; }
-        tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${p.title}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${p.member} · ${p.country}</span>`;
+        tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${p.title}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${p.member} -- ${p.country}</span>`;
         tip.style.opacity = '1';
       },
       onPointClick: d => showCountryDetail(d.country),

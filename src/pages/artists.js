@@ -1,10 +1,14 @@
 // FolkAble — Artists page (catalogue + microcosmos)
-import { artists, offerings, catColors } from '../data/index.js';
+import { artists, offerings, catColors, artistSymbols } from '../data/index.js';
 
 let mounted = false;
-let currentView = 'catalogue'; // 'catalogue' or 'profile'
+let currentView = 'catalogue';
 let selectedArtist = null;
 let root = null;
+
+function getSymbol(id) {
+  return artistSymbols[id] || '';
+}
 
 function renderCatalogue() {
   root.innerHTML = `
@@ -12,16 +16,16 @@ function renderCatalogue() {
       <div class="page-hero">
         <span class="hero-eyebrow">Creators</span>
         <h1 class="hero-title">Artists</h1>
-        <p class="hero-sub">Each artist on FolkAble has their own microcosmos — a personal space for their story, music, blog, and direct connection with supporters.</p>
+        <p class="hero-sub">Each artist on FolkAble has their own microcosmos -- a personal space for their story, music, blog, and direct connection with supporters.</p>
       </div>
       <div class="artist-grid">
         ${artists.map(a => `
           <div class="artist-card" data-aid="${a.id}">
-            <div class="ac-avatar avatar-bronze">${a.emoji}</div>
+            <div class="ac-avatar avatar-bronze"><span class="bronze-symbol">${getSymbol(a.id)}</span></div>
             <div class="ac-info">
               <div class="ac-name">${a.name}</div>
               <div class="ac-detail">${a.instrument}</div>
-              <div class="ac-detail">${a.country} · ${a.supporters} supporters</div>
+              <div class="ac-detail">${a.country} -- ${a.supporters} supporters</div>
               <div class="ac-label">${a.label}</div>
             </div>
           </div>
@@ -47,17 +51,17 @@ function renderProfile() {
   root.innerHTML = `
     <div class="page-scroll">
       <div class="micro-hero">
-        <button class="micro-back" id="micro-back">&larr; All Artists</button>
+        <button class="micro-back" id="micro-back">< All Artists</button>
         <div class="micro-header">
-          <div class="micro-avatar avatar-bronze">${a.emoji}</div>
+          <div class="micro-avatar avatar-bronze"><span class="bronze-symbol">${getSymbol(a.id)}</span></div>
           <div class="micro-info">
             <h1 class="micro-name">${a.name}</h1>
-            <div class="micro-meta">${a.instrument} · ${a.country} · Age ${a.age}</div>
-            <div class="micro-meta">Label: ${a.label} · ${a.supporters} supporters</div>
+            <div class="micro-meta">${a.instrument} -- ${a.country} -- Age ${a.age}</div>
+            <div class="micro-meta">Label: ${a.label} -- ${a.supporters} supporters</div>
           </div>
         </div>
         <div class="micro-actions">
-          <button class="landing-btn primary micro-support">&#9829; Support This Artist</button>
+          <button class="landing-btn primary micro-support">Support This Artist</button>
           <div class="micro-socials">
             ${a.socials.instagram ? `<a class="micro-social" href="https://instagram.com/${a.socials.instagram.replace('@','')}" target="_blank" rel="noopener">Instagram</a>` : ''}
             ${a.socials.spotify ? `<a class="micro-social" href="#" target="_blank" rel="noopener">Spotify</a>` : ''}
@@ -97,9 +101,9 @@ function renderProfile() {
                 <div class="o-bar" style="background:${catColors[o.category]};"></div>
                 <div style="flex:1;min-width:0;">
                   <div class="o-title">${o.title}</div>
-                  <div class="o-meta">${o.country} · ${o.date} · ${o.price}</div>
+                  <div class="o-meta">${o.country} -- ${o.date} -- ${o.price}</div>
                   <div class="o-desc">${o.desc}</div>
-                  <a class="o-ticket-link" href="#" target="_blank">Get Tickets &rarr;</a>
+                  <a class="o-ticket-link" href="#" target="_blank">Get Tickets ></a>
                 </div>
               </div>
             `).join('')}
@@ -110,7 +114,7 @@ function renderProfile() {
             ${a.products.map(p => `
               <div class="micro-product">
                 <span>${p}</span>
-                <a class="o-ticket-link" href="#" target="_blank">View &rarr;</a>
+                <a class="o-ticket-link" href="#" target="_blank">View ></a>
               </div>
             `).join('')}
           </section>
@@ -118,13 +122,13 @@ function renderProfile() {
 
         <aside class="micro-chat">
           <div class="mc-header">
-            <h3 class="mc-title">💬 ${a.name.split(' ')[0]}'s Community</h3>
+            <h3 class="mc-title">${a.name.split(' ')[0]}'s Community</h3>
             <span class="mc-members">${Math.floor(a.supporters * 0.12)} online</span>
           </div>
           <div class="mc-messages" id="mc-messages">
-            <div class="mc-msg"><span class="mc-author">${a.name}</span><span class="mc-time">1h ago</span><p>Welcome to my community space! Feel free to ask anything about my music or upcoming events.</p></div>
+            <div class="mc-msg"><span class="mc-author">${a.name}</span><span class="mc-time">1h ago</span><p>Welcome to my community space. Feel free to ask anything about my music or upcoming events.</p></div>
             <div class="mc-msg"><span class="mc-author">Folk Listener</span><span class="mc-time">45m ago</span><p>Your latest recording is incredible. Will there be a vinyl release?</p></div>
-            <div class="mc-msg"><span class="mc-author">${a.name}</span><span class="mc-time">30m ago</span><p>Thank you! We are pressing a limited edition — keep an eye on announcements.</p></div>
+            <div class="mc-msg"><span class="mc-author">${a.name}</span><span class="mc-time">30m ago</span><p>Thank you. We are pressing a limited edition -- keep an eye on announcements.</p></div>
             <div class="mc-msg"><span class="mc-author">Community Member</span><span class="mc-time">15m ago</span><p>Any chance of a workshop in my city? We have a great venue here.</p></div>
           </div>
           <div class="mc-input-wrap">
@@ -146,7 +150,6 @@ function renderProfile() {
 export function mount(r) {
   if (mounted) return;
   root = r;
-  // Check if navigated from discovery with a specific artist
   if (window.__folkable_artist) {
     selectedArtist = window.__folkable_artist;
     currentView = 'profile';
