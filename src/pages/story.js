@@ -31,7 +31,7 @@ export function mount(root) {
   <section class="story-hero">
     <span class="landing-eyebrow">The Story</span>
     <h1 class="story-title">How <span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span> Came to Be</h1>
-    <p class="story-subtitle">Born from a Sheffield record label's belief that folk music thrives when artists lead, communities gather, and creativity comes first.</p>
+    <p class="story-subtitle">Born from a Sheffield record label's belief that folk art thrives when artists lead, communities gather, and creativity comes first.</p>
   </section>
 
   <section class="story-section">
@@ -56,8 +56,8 @@ export function mount(root) {
     <div class="story-block">
       <div class="story-label">Initiatives</div>
       <h2 class="story-h2">Hudson Club, Presents, and Unearth</h2>
-      <p>Hudson grew well beyond releasing records. The Hudson Club, their Bandcamp subscription community, gave listeners a direct line to the artists they love. Hudson Presents brought folk, indie and world music to stages across the UK through a curated concert series. And Hudson Unearth became a launchpad for emerging talent -- artists like Anna McLuckie and Birdvox who went on to release acclaimed albums like The Little Winters and Shamming The Drama.</p>
-      <p>Each initiative reinforced the same principle: folk music is not a product to be consumed, but a living tradition to be sustained. This conviction -- that the community around the music matters as much as the music itself -- led Hudson to imagine a platform where that community could truly gather.</p>
+      <p>Hudson grew well beyond releasing records. The Hudson Club, their Bandcamp subscription community, gave audiences a direct line to the artists they love. Hudson Presents brought folk, indie and world art to stages across the UK through a curated series. And Hudson Unearth became a launchpad for emerging talent -- artists like Anna McLuckie and Birdvox who went on to release acclaimed works like The Little Winters and Shamming The Drama.</p>
+      <p>Each initiative reinforced the same principle: folk art is not a product to be consumed, but a living tradition to be sustained. This conviction -- that the community around the craft matters as much as the work itself -- led Hudson to imagine a platform where that community could truly gather.</p>
     </div>
   </section>
 
@@ -65,7 +65,7 @@ export function mount(root) {
     <div class="story-block">
       <div class="story-label">The Platform</div>
       <h2 class="story-h2">From Sheffield to the World</h2>
-      <p>FolkAble grew from Hudson's vision of connecting folk communities across borders. If a label in Sheffield could bring together artists from the Scottish Highlands, West Africa, and Scandinavia under one roof, why not extend that model to the entire global folk world?</p>
+      <p>FolkAble grew from Hudson's vision of connecting folk artists across borders. If a label in Sheffield could bring together creators from the Scottish Highlands, West Africa, and Scandinavia under one roof, why not extend that model to the entire global folk world?</p>
       <div class="story-principles">
         <div class="story-principle">
           <div class="sp-num">01</div>
@@ -80,7 +80,7 @@ export function mount(root) {
         <div class="story-principle">
           <div class="sp-num">03</div>
           <h3>Cultural Preservation</h3>
-          <p>Folk music is intangible heritage. FolkAble ensures that traditional knowledge, recordings, and community memory are preserved and accessible.</p>
+          <p>Folk art is intangible heritage. FolkAble ensures that traditional knowledge, works, and community memory are preserved and accessible.</p>
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@ export function mount(root) {
     <div class="story-block" style="text-align:center;">
       <div class="story-label">Join Us</div>
       <h2 class="story-h2">This Is Just the Beginning</h2>
-      <p>FolkAble is a living platform -- shaped by its members, responsive to its community, and always evolving. Whether you play, produce, listen, or simply love folk music, there is a place for you here.</p>
+      <p>FolkAble is a living platform -- shaped by its members, responsive to its community, and always evolving. Whether you create, perform, curate, or simply love folk art, there is a place for you here.</p>
       <div class="landing-ctas" style="justify-content:center;margin-top:28px;">
         <a class="landing-btn primary" href="#discovery">Explore the Globe</a>
         <a class="landing-btn secondary" href="#artists">Meet the Artists</a>

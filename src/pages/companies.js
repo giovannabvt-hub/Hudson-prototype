@@ -16,7 +16,7 @@ function renderCatalogue() {
       <div class="page-hero">
         <span class="hero-eyebrow">Network</span>
         <h1 class="hero-title">Companies & Labels</h1>
-        <p class="hero-sub">Independent labels and collectives that form the backbone of the FolkAble network. Each has their own page to publish news, events, and releases.</p>
+        <p class="hero-sub">Independent collectives and labels that form the backbone of the FolkAble network. Each has their own page to publish news, events, and works.</p>
       </div>
       <div class="company-grid">
         ${companies.map(c => `

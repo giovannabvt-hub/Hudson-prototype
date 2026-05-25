@@ -22,14 +22,14 @@ const TEMPLATE = `
       <span class="chip on" data-cat="gathering"><span class="chip-dot" style="background:#5C3A1E;"></span>Gatherings</span>
     </div>
     <div class="ctrl-spacer"></div>
-    <button class="disc-list-toggle" id="disc-list-toggle">List View</button>
+    <button class="disc-list-toggle on" id="disc-list-toggle">Globe Only</button>
     <button class="rotate-btn on" id="rotate-btn">Auto-rotate</button>
   </div>
 
   <div class="disc-layout">
     <div class="globe-wrap"><div id="globe-el"></div></div>
 
-    <aside class="disc-sidebar" id="disc-sidebar">
+    <aside class="disc-sidebar open" id="disc-sidebar">
       <div class="disc-sidebar-head">
         <h3 class="disc-sidebar-title">All Offerings</h3>
         <span class="disc-sidebar-count" id="disc-sidebar-count">0</span>
@@ -221,7 +221,7 @@ export function mount(root) {
     const sidebar = document.getElementById('disc-sidebar');
     sidebar.classList.toggle('open');
     this.classList.toggle('on');
-    this.textContent = sidebar.classList.contains('open') ? 'Globe View' : 'List View';
+    this.textContent = sidebar.classList.contains('open') ? 'Globe Only' : 'Show List';
     // Re-render globe size after sidebar toggle
     setTimeout(() => {
       const el = document.getElementById('globe-el');

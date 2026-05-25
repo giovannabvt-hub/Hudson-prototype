@@ -10,8 +10,8 @@ const TEMPLATE = `
     <div class="landing-hero-content">
       <img src="/logo.png" alt="FolkAble" style="width:120px;height:auto;margin:0 auto 24px;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5));mix-blend-mode:screen;">
       <h1 class="landing-title"><span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span></h1>
-      <p class="landing-tagline">A decentralised platform connecting folk communities across the globe.</p>
-      <p class="landing-desc">Discover events, support artists, join gatherings, and shape the future of folk music through collective governance. Built by musicians, for musicians.</p>
+      <p class="landing-tagline">A decentralised platform connecting folk artists and communities across the globe.</p>
+      <p class="landing-desc">Discover events, support folk artists, join gatherings, and shape the future of folk traditions through collective governance. Built by artists, for artists and their audiences.</p>
       <div class="landing-ctas">
         <a class="landing-btn primary" href="#discovery">Explore the Globe</a>
         <a class="landing-btn secondary" href="#story">Our Story</a>
@@ -29,7 +29,7 @@ const TEMPLATE = `
     <div class="landing-section-inner">
       <span class="landing-eyebrow">Platform</span>
       <h2 class="landing-h2">What is <span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span>?</h2>
-      <p class="landing-body">FolkAble is a community-owned web platform where folk musicians, labels, and listeners converge. No algorithms. No corporate gatekeepers. Every artist has their own microcosmos -- a personal space to share their story, blog, music, and connect directly with supporters. Every decision about the platform is made collectively through transparent governance.</p>
+      <p class="landing-body">FolkAble is a community-owned web platform where folk artists, collectives, and audiences converge. No algorithms. No corporate gatekeepers. Every artist has their own microcosmos -- a personal space to share their story, work, craft, and connect directly with supporters. Every decision about the platform is made collectively through transparent governance.</p>
     </div>
   </section>
 
@@ -44,7 +44,7 @@ const TEMPLATE = `
   <section class="landing-section landing-cta-section">
     <div class="landing-section-inner" style="text-align:center;">
       <h2 class="landing-h2">Join the Community</h2>
-      <p class="landing-body" style="max-width:560px;margin:0 auto 28px;">Whether you are an artist, a label, or a listener -- FolkAble is built for you. Register as a creator or a supporter and become part of the global folk network.</p>
+      <p class="landing-body" style="max-width:560px;margin:0 auto 28px;">Whether you are a folk artist, a collective, or part of the audience -- FolkAble is built for you. Register as a creator or a supporter and become part of the global folk network.</p>
       <div class="landing-ctas" style="justify-content:center;">
         <button class="landing-btn primary" onclick="document.getElementById('auth-modal').classList.add('open')">Sign Up</button>
         <a class="landing-btn secondary" href="#discovery">Browse First</a>
@@ -55,7 +55,7 @@ const TEMPLATE = `
   <footer class="landing-footer">
     <div class="landing-footer-inner">
       <span class="landing-footer-brand"><span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span></span>
-      <span class="landing-footer-text">Built by Hudson Records -- A decentralised folk community platform</span>
+      <span class="landing-footer-text">Built by Hudson Records -- A decentralised platform for folk artists</span>
     </div>
   </footer>
 </div>
@@ -63,11 +63,11 @@ const TEMPLATE = `
 
 const features = [
   { key:'discovery', href:'#discovery', title:'Discovery', desc:'Browse an interactive 3D globe. Find events, gatherings, and artists across 18+ countries. Click any marker to dive deeper.' },
-  { key:'artists',   href:'#artists',   title:'Artists', desc:'Each artist has their own microcosmos -- biography, blog, releases, events, and a direct channel to their supporters.' },
-  { key:'companies', href:'#companies', title:'Companies', desc:'Independent labels and collectives publish news, events, and releases from their own dedicated pages.' },
+  { key:'artists',   href:'#artists',   title:'Artists', desc:'Each folk artist has their own microcosmos -- biography, blog, work, events, and a direct channel to their audience.' },
+  { key:'companies', href:'#companies', title:'Companies', desc:'Independent collectives and labels publish news, events, and releases from their own dedicated pages.' },
   { key:'community', href:'#community', title:'Community', desc:'A server for all members. Chat in general channels or filter by artist and topic.' },
   { key:'roundtable',href:'#roundtable',title:'Round Table', desc:'Snapshot-style governance. Vote on events, budgets, and proposals. Every member has a voice.' },
-  { key:'story',     href:'#story',     title:'Our Story', desc:'Learn how Hudson Records built FolkAble to connect the global folk community.' },
+  { key:'story',     href:'#story',     title:'Our Story', desc:'Learn how Hudson Records built FolkAble to connect folk artists worldwide.' },
 ];
 
 export function mount(root) {

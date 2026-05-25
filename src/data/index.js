@@ -61,7 +61,7 @@ export const offerings = [
   {id:13,country:'United Kingdom',lat:57.48,lng:-4.22,title:'Celtic Connections Session',member:'Caledonian Folk Club',category:'event',date:'2026-06-14',price:'GBP 12',desc:'Highland tune session.',company:'Hudson Records',artist:'aoife'},
   {id:14,country:'Colombia',lat:4.71,lng:-74.07,title:'Vallenato Cumbia Night',member:'Barranquilla Roots',category:'event',date:'2026-05-28',price:'COP 40,000',desc:'Traditional vallenato ensemble.',company:'Pampa Folk',artist:'santiago'},
   {id:15,country:'India',lat:20.59,lng:78.96,title:'Baul Songs of Bengal',member:'Mystic Strings India',category:'gathering',date:'2026-07-15',price:'INR 800',desc:'Workshop on the spiritual Baul tradition.',company:'Eastern Routes',artist:'yuki'},
-  {id:16,country:'France',lat:44.84,lng:-0.57,title:'Bordeaux Folk Gathering',member:'Le Cercle Folk',category:'gathering',date:'2026-06-08',price:'EUR 15',desc:'Monthly gathering of French folk musicians.',company:'Hudson Records',artist:'clara'},
+  {id:16,country:'France',lat:44.84,lng:-0.57,title:'Bordeaux Folk Gathering',member:'Le Cercle Folk',category:'gathering',date:'2026-06-08',price:'EUR 15',desc:'Monthly gathering of French folk artists.',company:'Hudson Records',artist:'clara'},
   {id:17,country:'Hungary',lat:47.50,lng:19.04,title:'Budapest Tanzhaz Camp',member:'Tanzhaz Egyesulet',category:'gathering',date:'2026-08-10',price:'EUR 220',desc:'Week-long traditional dance camp.',company:'Hudson Records',artist:'erik'},
   {id:18,country:'Norway',lat:69.65,lng:18.96,title:'Arctic Folk Summit',member:'Tromso Folk Society',category:'event',date:'2026-08-01',price:'kr 450',desc:'Three-day festival above the Arctic Circle.',company:'Vestland Folk',artist:'erik'},
   {id:19,country:'Morocco',lat:31.63,lng:-7.99,title:'Atlas Mountain Moussem',member:'Maalem Hamid',category:'event',date:'2026-09-05',price:'Free',desc:'Traditional moussem gathering in the High Atlas.',company:'Eastern Routes',artist:'hamid'},
@@ -70,11 +70,11 @@ export const offerings = [
 
 export const companies = [
   { id:'hudson',name:'Hudson Records',color:'#8B6842',
-    bio:'Founded in 2016 in Sheffield, Yorkshire, Hudson Records is an independent record label specialising in folk, indie and world music. Their mission is to create an artist-led, sustainable ecosystem that prioritises creativity, community, and ethical business practices.',
+    bio:'Founded in 2016 in Sheffield, Yorkshire, Hudson Records is an independent label specialising in folk, indie and world art. Their mission is to create an artist-led, sustainable ecosystem that prioritises creativity, community, and ethical business practices.',
     founded:'2016',location:'Sheffield, Yorkshire',members:42,
     articles:[
-      {title:'Hudson Club: A New Way to Support Folk',date:'2026-04-15',excerpt:'Our Bandcamp subscription community brings listeners closer to the artists they love...'},
-      {title:'Hudson Presents: Live Season Announced',date:'2026-05-01',excerpt:'Our concert series returns with an expanded programme of folk, indie and world music...'},
+      {title:'Hudson Club: A New Way to Support Folk',date:'2026-04-15',excerpt:'Our Bandcamp subscription community brings audiences closer to the artists they love...'},
+      {title:'Hudson Presents: Live Season Announced',date:'2026-05-01',excerpt:'Our concert series returns with an expanded programme of folk, indie and world art...'},
       {title:'Hudson Unearth: Emerging Talent Open Call',date:'2026-03-20',excerpt:'Our emerging talent initiative is now accepting submissions from new folk artists worldwide...'},
     ],
     releases:['Dominion of Spells','Shamming The Drama','Windblown','The Little Winters'],
@@ -82,7 +82,7 @@ export const companies = [
     socials:{website:'https://hudsonrecords.co.uk',instagram:'@hudsonrecords',twitter:'@hudsonrec'}
   },
   { id:'sruth',name:'Sruth Records',color:'#7A6B52',
-    bio:'Sruth (Irish for "stream") is a boutique folk label from Galway, Ireland, specialising in traditional Irish music. Every release is pressed on vinyl with hand-designed sleeves.',
+    bio:'Sruth (Irish for "stream") is a boutique folk label from Galway, Ireland, specialising in traditional Irish folk art. Every release is pressed on vinyl with hand-designed sleeves.',
     founded:'2020',location:'Galway, Ireland',members:12,
     articles:[{title:'Vol. 3 Sold Out in 11 Days',date:'2026-05-05',excerpt:'We did not expect this. Thank you to every member who supported the pressing...'}],
     releases:['Galway Sessions Vol. 3','Galway Sessions Vol. 4','Clare to Here'],
@@ -98,7 +98,7 @@ export const companies = [
     socials:{website:'https://casadofado.pt',instagram:'@casadofado'}
   },
   { id:'vestland',name:'Vestland Folk',color:'#6B5A3E',
-    bio:'Based in Bergen, Norway, Vestland Folk champions Scandinavian traditional music. From hardanger fiddle workshops to Arctic festivals, they connect Nordic folk traditions with the wider world.',
+    bio:'Based in Bergen, Norway, Vestland Folk champions Scandinavian folk traditions. From hardanger fiddle workshops to Arctic festivals, they connect Nordic folk artists with the wider world.',
     founded:'2017',location:'Bergen, Norway',members:28,
     articles:[{title:'Arctic Folk Summit 2026 Announced',date:'2026-03-10',excerpt:'Three days above the Arctic Circle. Tromso, August 1-3...'}],
     releases:['Nordmark'],
@@ -106,7 +106,7 @@ export const companies = [
     socials:{website:'https://vestlandfolk.no',instagram:'@vestlandfolk'}
   },
   { id:'hollow',name:'Hollow Holler Records',color:'#9B7653',
-    bio:'From the hills of Tennessee, Hollow Holler Records documents the living tradition of Appalachian music. Small-batch vinyl and 7" pressings only.',
+    bio:'From the hills of Tennessee, Hollow Holler Records documents the living tradition of Appalachian folk art. Small-batch vinyl and 7" pressings only.',
     founded:'2021',location:'Asheville, NC',members:15,
     articles:[{title:'7" Series Year Two',date:'2026-04-01',excerpt:'The quarterly series continues. Each release: 300 copies, one take, no overdubs...'}],
     releases:['Old-Time String Band 7"'],
@@ -138,7 +138,7 @@ export const companyMap = {
 
 export const artists = [
   { id:'aoife',name:'Aoife Brennan',age:34,country:'Ireland',instrument:'Fiddle & Banjo',
-    bio:'Born in County Clare, Aoife has played traditional Irish music since age six. She has performed at Fleadh Cheoil na hEireann four times and released three albums with Sruth Records. Her playing bridges the gap between the old session traditions and a new generation of listeners.',
+    bio:'Born in County Clare, Aoife has played traditional Irish music since age six. She has performed at Fleadh Cheoil na hEireann four times and released three albums with Sruth Records. Her playing bridges the gap between the old session traditions and a new generation of audiences.',
     products:['Galway Sessions Vol. 3 (vinyl)','The Banjo Notebooks (book)','Tour Hoodie 2026'],
     events:['Tuesday Trad Session','Banjo Tuning Course','Celtic Connections Session','Limerick Fiddle Week'],
     countries:['Ireland','United States of America','United Kingdom'],

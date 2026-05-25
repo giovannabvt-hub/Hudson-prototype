@@ -16,7 +16,7 @@ function renderCatalogue() {
       <div class="page-hero">
         <span class="hero-eyebrow">Creators</span>
         <h1 class="hero-title">Artists</h1>
-        <p class="hero-sub">Each artist on FolkAble has their own microcosmos -- a personal space for their story, music, blog, and direct connection with supporters.</p>
+        <p class="hero-sub">Each folk artist on FolkAble has their own microcosmos -- a personal space for their story, work, blog, and direct connection with their audience.</p>
       </div>
       <div class="artist-grid">
         ${artists.map(a => `

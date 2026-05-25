@@ -121,7 +121,7 @@ function render() {
             <div class="comm-msg-avatar avatar-bronze">${a.name[0]}</div>
             <div class="comm-msg-body">
               <div class="comm-msg-head"><span class="comm-msg-author">${a.name}</span><span class="comm-msg-time">pinned</span></div>
-              <p class="comm-msg-text">Welcome to my channel. This is a space for my supporters to connect, discuss my music, and stay updated on upcoming events.</p>
+              <p class="comm-msg-text">Welcome to my channel. This is a space for my supporters to connect, discuss my work, and stay updated on upcoming events.</p>
             </div>
           </div>
           <div class="comm-msg">
