@@ -35,7 +35,7 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
 
   return {
     setCapColor(fn) { globe.polygonCapColor(d => fn(d.properties.name)); },
-    setMarkers({ data, ringColor, ringMaxRadius, ringPropagationSpeed, ringRepeatPeriod, pointColor, pointRadius }) {
+    setMarkers({ data, ringColor, ringMaxRadius, ringPropagationSpeed, ringRepeatPeriod, pointColor, pointRadius, onPointHover, onPointClick }) {
       globe.ringsData(data)
         .ringLat('lat').ringLng('lng')
         .ringColor(ringColor)
@@ -46,23 +46,24 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
       globe.pointsData(data)
         .pointLat('lat').pointLng('lng')
         .pointColor(pointColor)
-        .pointAltitude(0.014)
+        .pointAltitude(0.025)
         .pointRadius(pointRadius)
-        .pointResolution(10)
-        .onPointHover(onPointHover)
-        .onPointClick(onPointClick);
+        .pointResolution(12)
+        .onPointHover(onPointHover || (() => {}))
+        .onPointClick(onPointClick || (() => {}));
     },
-    setLabels({ data, onLabelClick }) {
+    setLabels({ data, onLabelClick, onLabelHover }) {
       globe.labelsData(data)
         .labelLat('lat').labelLng('lng')
         .labelText('title')
-        .labelSize(d => d.category === 'event' ? 0.7 : 0.6)
-        .labelDotRadius(0.3)
+        .labelSize(d => d.category === 'event' ? 0.9 : 0.75)
+        .labelDotRadius(0.45)
         .labelColor(d => d.category === 'event' ? () => 'rgba(184,134,11,0.92)' : () => 'rgba(139,104,66,0.88)')
         .labelDotOrientation(() => 'bottom')
         .labelResolution(3)
-        .labelAltitude(0.018)
-        .onLabelClick(onLabelClick || (() => {}));
+        .labelAltitude(0.022)
+        .onLabelClick(onLabelClick || (() => {}))
+        .onLabelHover(onLabelHover || (() => {}));
     },
     setRotate(b) { globe.controls().autoRotate = b; },
   };
