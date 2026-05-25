@@ -1,8 +1,7 @@
-// FolkAble — Discovery page (globe with events & gatherings)
-import { offerings, catColors, artists, companies, companyMap, motifs } from '../data/index.js';
+// FolkAble — Discovery page
+// Hotspot-driven globe: hover for preview, click for immersive detail panel
+import { offerings, catColors, artists, companies, companyMap } from '../data/index.js';
 import { init as initGlobe } from '../lib/globe.js';
-import { playMotif, startWave, resetWave } from '../lib/audio.js';
-import { hexToRgba } from '../lib/utils.js';
 import { go } from '../lib/router.js';
 
 const state = {
@@ -12,6 +11,18 @@ const state = {
 
 let globeApi = null;
 let mounted = false;
+
+/* ── helpers ─────────────────────────────────────────────── */
+
+function artistFor(o) { return artists.find(a => a.id === o.artist) || null; }
+function companyFor(o) {
+  const cid = companyMap[o.company];
+  return cid ? companies.find(c => c.id === cid) || null : null;
+}
+function catLabel(o) { return o.category === 'event' ? 'Event' : 'Gathering'; }
+function catClass(o) { return o.category === 'event' ? 'hp-cat-event' : 'hp-cat-gathering'; }
+
+/* ── template ────────────────────────────────────────────── */
 
 const TEMPLATE = `
   <div class="ctrl-bar">
@@ -27,23 +38,28 @@ const TEMPLATE = `
 
   <div class="disc-layout">
     <div class="globe-wrap"><div id="globe-el"></div></div>
-
-    <aside class="disc-sidebar" id="disc-sidebar">
-      <div class="disc-sidebar-head">
-        <h3 class="disc-sidebar-title" id="disc-sidebar-title">Offering Details</h3>
-        <button class="disc-sidebar-close" id="disc-sidebar-close">&times;</button>
-      </div>
-      <div class="disc-sidebar-list" id="disc-sidebar-list"></div>
-    </aside>
   </div>
 
   <div class="legend">
     <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#8B6842"/></svg> Event</div>
     <div class="leg-item"><svg width="10" height="10"><circle cx="5" cy="5" r="4" fill="#5C3A1E"/></svg> Gathering</div>
     <div class="leg-sep"></div>
-    <span class="leg-hint">hover to preview -- click a dot for full details</span>
+    <span class="leg-hint">hover to preview -- click for full details</span>
+  </div>
+
+  <!-- Hover card (follows cursor) -->
+  <div class="hp-hover-card" id="hp-hover"></div>
+
+  <!-- Click detail panel (overlay) -->
+  <div class="hp-panel-overlay" id="hp-overlay">
+    <div class="hp-panel" id="hp-panel">
+      <button class="hp-panel-close" id="hp-panel-close">&times;</button>
+      <div class="hp-panel-body" id="hp-panel-body"></div>
+    </div>
   </div>
 `;
+
+/* ── globe data ──────────────────────────────────────────── */
 
 const BASE_FILL = 'rgba(15,61,46,0.25)';
 const RAMP = ['rgba(92,58,30,0.35)','rgba(139,104,66,0.50)','rgba(139,104,66,0.65)','rgba(184,134,11,0.82)'];
@@ -54,158 +70,200 @@ function countryFill(name) {
 }
 
 function visibleOfferings() {
-  return offerings.filter(o => state.cats.has(o.category));
+  const data = offerings.filter(o => state.cats.has(o.category));
+  // Pre-compute ring RGB
+  data.forEach(d => {
+    const hex = catColors[d.category] || '#8B6842';
+    d._ringRgb = [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+  });
+  return data;
 }
 
 function refreshGlobe() {
   if (!globeApi) return;
   globeApi.setCapColor(countryFill);
   const data = visibleOfferings();
-
-  globeApi.setMarkers({
+  globeApi.setHotspots({
     data,
-    ringColor: d => t => {
-      const base = catColors[d.category] || '#8B6842';
-      const hex = base.startsWith('#') ? base : '#8B6842';
-      const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
-      return `rgba(${r},${g},${b},${(1-t)})`;
-    },
-    ringMaxRadius: 3,
-    ringPropagationSpeed: 2.4,
-    ringRepeatPeriod: 1600,
     pointColor: d => catColors[d.category] || '#8B6842',
-    pointRadius: 0.7,
-    onPointHover: showOfferingTooltip,
-    onPointClick: d => { if (d) openOfferingSidebar(d); },
-  });
-
-  globeApi.setLabels({
-    data,
-    onLabelClick: d => { if (d) openOfferingSidebar(d); },
-    onLabelHover: showOfferingTooltip,
+    onHover: onHotspotHover,
+    onClick: onHotspotClick,
   });
 }
 
-/* Show tooltip for an offering (used by point hover AND label hover) */
-function showOfferingTooltip(d) {
-  const tip = document.getElementById('tip');
-  if (!d) { tip.style.opacity = '0'; return; }
-  const catLabel = d.category === 'event' ? 'Event' : 'Gathering';
-  const artist = artists.find(a => a.id === d.artist);
-  const artistName = artist ? artist.name : '';
-  tip.innerHTML = `
-    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:${catColors[d.category]};margin-bottom:3px;">${catLabel}</div>
-    <strong style="font-family:'Playfair Display',serif;font-size:14px;">${d.title}</strong>
-    <br><span style="font-size:11.5px;color:rgba(232,220,200,0.72);">${d.member} -- ${d.country}</span>
-    <br><span style="font-size:11px;color:rgba(232,220,200,0.52);">${d.date} -- ${d.price}</span>
-    ${d.desc ? `<br><span style="font-size:11px;color:rgba(232,220,200,0.42);line-height:1.4;display:block;margin-top:3px;">${d.desc}</span>` : ''}
-    ${artistName ? `<br><span style="font-size:10.5px;color:${catColors[d.category]};margin-top:2px;display:block;">by ${artistName}</span>` : ''}
-    <div style="font-size:9px;color:rgba(232,220,200,0.28);margin-top:4px;text-transform:uppercase;letter-spacing:0.1em;">click for details</div>
+/* ── HOVER — lightweight preview card ────────────────────── */
+
+let hoverTarget = null;
+
+function onHotspotHover(d) {
+  const card = document.getElementById('hp-hover');
+  if (!d) {
+    hoverTarget = null;
+    card.classList.remove('visible');
+    return;
+  }
+  hoverTarget = d;
+  const artist = artistFor(d);
+  const participants = 12 + Math.floor(Math.abs(d.lat * 3.7 + d.lng * 1.3) % 180);
+
+  card.innerHTML = `
+    <div class="hp-hc-cat ${catClass(d)}">${catLabel(d)}</div>
+    <div class="hp-hc-title">${d.title}</div>
+    <div class="hp-hc-meta">${d.member} -- ${d.country}</div>
+    <div class="hp-hc-row">
+      <span class="hp-hc-date">${d.date}</span>
+      <span class="hp-hc-price">${d.price}</span>
+    </div>
+    <div class="hp-hc-desc">${d.desc}</div>
+    ${artist ? `<div class="hp-hc-artist">by ${artist.name}</div>` : ''}
+    <div class="hp-hc-footer">
+      <span class="hp-hc-participants">${participants} active</span>
+      <span class="hp-hc-cta">click for details</span>
+    </div>
   `;
-  tip.style.opacity = '1';
+  card.classList.add('visible');
 }
 
-/* Close the sidebar */
-function closeSidebar() {
-  const sidebar = document.getElementById('disc-sidebar');
-  if (sidebar) sidebar.classList.remove('open');
-  // Trigger resize so globe reclaims space
-  setTimeout(() => window.dispatchEvent(new Event('resize')), 350);
-}
+/* ── CLICK — immersive detail panel ──────────────────────── */
 
-/* Open sidebar with a single offering's full details */
-function openOfferingSidebar(d) {
-  const sidebar = document.getElementById('disc-sidebar');
-  const list = document.getElementById('disc-sidebar-list');
-  const title = document.getElementById('disc-sidebar-title');
-  if (!sidebar || !list) return;
+function onHotspotClick(d) {
+  if (!d) return;
+  const artist = artistFor(d);
+  const company = companyFor(d);
+  const participants = 12 + Math.floor(Math.abs(d.lat * 3.7 + d.lng * 1.3) % 180);
 
-  const o = d;
-  const artist = artists.find(a => a.id === o.artist);
-  const companyId = companyMap[o.company];
-  const company = companies.find(c => c.id === companyId);
-  const catClass = o.category === 'event' ? 'disc-cat-event' : 'disc-cat-gathering';
-  const catLabel = o.category === 'event' ? 'Event' : 'Gathering';
+  // Determine CTA based on category
+  let ctaText = 'View Details';
+  if (d.category === 'gathering') ctaText = 'Join Gathering';
+  else if (d.category === 'event') ctaText = 'Enter Experience';
 
-  title.textContent = o.country;
+  // Other offerings in same country
+  const related = offerings.filter(o =>
+    o.country === d.country && o.title !== d.title && state.cats.has(o.category)
+  );
 
-  // Show ALL offerings in this country, with the clicked one expanded
-  const countryOffs = offerings.filter(x => x.country === o.country && state.cats.has(x.category));
+  const body = document.getElementById('hp-panel-body');
+  body.innerHTML = `
+    <div class="hp-p-cat ${catClass(d)}">${catLabel(d)}</div>
+    <h2 class="hp-p-title">${d.title}</h2>
+    <div class="hp-p-location">${d.country} -- ${d.member}</div>
 
-  list.innerHTML = countryOffs.map(item => {
-    const isActive = item.title === o.title;
-    const itemArtist = artists.find(a => a.id === item.artist);
-    const itemCompanyId = companyMap[item.company];
-    const itemCompany = companies.find(c => c.id === itemCompanyId);
-    const itemCatClass = item.category === 'event' ? 'disc-cat-event' : 'disc-cat-gathering';
-    const itemCatLabel = item.category === 'event' ? 'Event' : 'Gathering';
+    <div class="hp-p-info-grid">
+      <div class="hp-p-info-item">
+        <span class="hp-p-info-label">Date</span>
+        <span class="hp-p-info-value">${d.date}</span>
+      </div>
+      <div class="hp-p-info-item">
+        <span class="hp-p-info-label">Price</span>
+        <span class="hp-p-info-value">${d.price}</span>
+      </div>
+      <div class="hp-p-info-item">
+        <span class="hp-p-info-label">Participants</span>
+        <span class="hp-p-info-value">${participants}</span>
+      </div>
+      <div class="hp-p-info-item">
+        <span class="hp-p-info-label">Status</span>
+        <span class="hp-p-info-value hp-p-status">Upcoming</span>
+      </div>
+    </div>
 
-    if (isActive) {
-      // Expanded card for the clicked offering
-      return `
-        <div class="disc-detail-card active">
-          <div class="disc-detail-cat ${itemCatClass}">${itemCatLabel}</div>
-          <h3 class="disc-detail-title">${item.title}</h3>
-          <div class="disc-detail-meta">${item.member} -- ${item.date}</div>
-          <div class="disc-detail-meta">${item.country} -- ${item.price}</div>
-          <p class="disc-detail-desc">${item.desc}</p>
-          <div class="disc-detail-links">
-            ${itemArtist ? `<button class="disc-detail-link" data-artist="${itemArtist.id}"><span class="disc-link-label">Artist</span> ${itemArtist.name} ></button>` : ''}
-            ${itemCompany ? `<button class="disc-detail-link" data-company="${itemCompany.id}"><span class="disc-link-label">Label</span> ${itemCompany.name} ></button>` : ''}
+    <div class="hp-p-section">
+      <h3 class="hp-p-section-title">About</h3>
+      <p class="hp-p-desc">${d.desc}</p>
+    </div>
+
+    <div class="hp-p-tags">
+      <span class="hp-p-tag">${d.category}</span>
+      <span class="hp-p-tag">${d.country}</span>
+      ${d.company ? `<span class="hp-p-tag">${d.company}</span>` : ''}
+    </div>
+
+    ${artist ? `
+      <div class="hp-p-section">
+        <h3 class="hp-p-section-title">Artist</h3>
+        <div class="hp-p-artist-card" data-go-artist="${artist.id}">
+          <div class="hp-p-artist-info">
+            <div class="hp-p-artist-name">${artist.name}</div>
+            <div class="hp-p-artist-detail">${artist.instrument} -- ${artist.country}</div>
+            <div class="hp-p-artist-detail">${artist.supporters} supporters</div>
           </div>
+          <span class="hp-p-artist-arrow">View Artist ></span>
         </div>
-      `;
-    } else {
-      // Compact card for other offerings in same country
-      return `
-        <div class="disc-detail-card compact" data-offering-idx="${item.id}">
-          <div class="disc-detail-cat ${itemCatClass}">${itemCatLabel}</div>
-          <div class="disc-detail-title-sm">${item.title}</div>
-          <div class="disc-detail-meta">${item.member} -- ${item.date} -- ${item.price}</div>
-        </div>
-      `;
-    }
-  }).join('');
+      </div>
+    ` : ''}
 
-  // Bind artist links
-  list.querySelectorAll('.disc-detail-link[data-artist]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      window.__folkable_artist = btn.dataset.artist;
+    ${company ? `
+      <div class="hp-p-section">
+        <h3 class="hp-p-section-title">Label</h3>
+        <div class="hp-p-company-card" data-go-company="${company.id}">
+          <div class="hp-p-company-info">
+            <div class="hp-p-company-name">${company.name}</div>
+            <div class="hp-p-company-detail">${company.location}</div>
+          </div>
+          <span class="hp-p-company-arrow">View Label ></span>
+        </div>
+      </div>
+    ` : ''}
+
+    <button class="hp-p-cta">${ctaText}</button>
+
+    ${related.length ? `
+      <div class="hp-p-section">
+        <h3 class="hp-p-section-title">Also in ${d.country}</h3>
+        ${related.map(r => {
+          const rArtist = artistFor(r);
+          return `
+            <div class="hp-p-related" data-related-id="${r.id}">
+              <div class="hp-p-related-bar ${catClass(r)}"></div>
+              <div class="hp-p-related-body">
+                <div class="hp-p-related-cat ${catClass(r)}">${catLabel(r)}</div>
+                <div class="hp-p-related-title">${r.title}</div>
+                <div class="hp-p-related-meta">${r.date} -- ${r.price}${rArtist ? ` -- ${rArtist.name}` : ''}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    ` : ''}
+  `;
+
+  // Bind navigation
+  body.querySelectorAll('[data-go-artist]').forEach(el => {
+    el.addEventListener('click', () => {
+      closePanel();
+      window.__folkable_artist = el.dataset.goArtist;
       go('artists');
     });
   });
-
-  // Bind company links
-  list.querySelectorAll('.disc-detail-link[data-company]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      window.__folkable_company = btn.dataset.company;
+  body.querySelectorAll('[data-go-company]').forEach(el => {
+    el.addEventListener('click', () => {
+      closePanel();
+      window.__folkable_company = el.dataset.goCompany;
       go('companies');
     });
   });
-
-  // Bind compact cards — clicking expands them
-  list.querySelectorAll('.disc-detail-card.compact').forEach(card => {
-    card.addEventListener('click', () => {
-      const idx = parseInt(card.dataset.offeringIdx);
-      const clickedOff = offerings.find(x => x.id === idx);
-      if (clickedOff) openOfferingSidebar(clickedOff);
+  body.querySelectorAll('[data-related-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      const r = offerings.find(o => o.id === parseInt(el.dataset.relatedId));
+      if (r) onHotspotClick(r);
     });
   });
 
-  // Open the sidebar
-  sidebar.classList.add('open');
-  setTimeout(() => window.dispatchEvent(new Event('resize')), 350);
+  openPanel();
 }
 
-/* Open sidebar showing all offerings for a country */
-function openCountrySidebar(country) {
-  const countryOffs = offerings.filter(x => x.country === country && state.cats.has(x.category));
-  if (!countryOffs.length) return;
-  // Open with the first offering expanded
-  openOfferingSidebar(countryOffs[0]);
+function openPanel() {
+  document.getElementById('hp-overlay').classList.add('open');
+  document.getElementById('hp-panel').scrollTop = 0;
+  // Hide hover card
+  document.getElementById('hp-hover').classList.remove('visible');
 }
+
+function closePanel() {
+  document.getElementById('hp-overlay').classList.remove('open');
+}
+
+/* ── MOUNT ───────────────────────────────────────────────── */
 
 export function mount(root) {
   if (mounted) return;
@@ -226,43 +284,55 @@ export function mount(root) {
     if (globeApi) globeApi.setRotate(state.rotate);
   });
 
-  // Sidebar close
-  document.getElementById('disc-sidebar-close').addEventListener('click', closeSidebar);
+  // Panel close
+  document.getElementById('hp-panel-close').addEventListener('click', closePanel);
+  document.getElementById('hp-overlay').addEventListener('click', e => {
+    if (e.target.id === 'hp-overlay') closePanel();
+  });
 
-  // Tooltip
+  // ESC to close
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePanel();
+  });
+
+  // Hover card follows cursor
   document.body.addEventListener('mousemove', e => {
-    const tip = document.getElementById('tip');
-    let nx = e.clientX + 14, ny = e.clientY + 14;
-    if (nx + 260 > window.innerWidth)  nx = e.clientX - 260;
-    if (ny + 60  > window.innerHeight) ny = e.clientY - 60;
-    tip.style.left = nx + 'px'; tip.style.top = ny + 'px';
+    const card = document.getElementById('hp-hover');
+    if (!card.classList.contains('visible')) return;
+    let x = e.clientX + 18, y = e.clientY + 18;
+    // Keep on screen
+    const rect = card.getBoundingClientRect();
+    if (x + rect.width + 10 > window.innerWidth) x = e.clientX - rect.width - 12;
+    if (y + rect.height + 10 > window.innerHeight) y = e.clientY - rect.height - 12;
+    card.style.left = x + 'px';
+    card.style.top = y + 'px';
   });
 
   // Init globe
-  const tip = document.getElementById('tip');
   if (!globeApi) {
     globeApi = initGlobe({
       el: document.getElementById('globe-el'),
       onPolygonHover: p => {
-        if (!p) { tip.style.opacity = '0'; return; }
-        const n = p.properties.name;
-        if (countryFill(n) === BASE_FILL) { tip.style.opacity = '0'; return; }
-        const evts = offerings.filter(o => o.country === n && o.category === 'event' && state.cats.has('event')).length;
-        const gths = offerings.filter(o => o.country === n && o.category === 'gathering' && state.cats.has('gathering')).length;
-        let details = [];
-        if (evts) details.push(`${evts} event${evts!==1?'s':''}`);
-        if (gths) details.push(`${gths} gathering${gths!==1?'s':''}`);
-        tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${n}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${details.join(', ')}</span>`;
-        tip.style.opacity = '1';
+        // Hide hover card when on empty land
+        if (!p || countryFill(p.properties.name) === BASE_FILL) {
+          if (!hoverTarget) document.getElementById('hp-hover').classList.remove('visible');
+          return;
+        }
       },
-      onPolygonClick: p => openCountrySidebar(p.properties.name),
+      onPolygonClick: p => {
+        // Click a country -> open first offering in that country
+        const offs = offerings.filter(o => o.country === p.properties.name && state.cats.has(o.category));
+        if (offs.length) onHotspotClick(offs[0]);
+      },
     });
   }
+
   refreshGlobe();
   mounted = true;
 }
 
 export function unmount() {
-  closeSidebar();
-  document.getElementById('tip').style.opacity = '0';
+  closePanel();
+  const card = document.getElementById('hp-hover');
+  if (card) card.classList.remove('visible');
 }
