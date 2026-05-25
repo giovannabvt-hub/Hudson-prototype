@@ -121,8 +121,24 @@ function renderCompany() {
 export function mount(r) {
   if (mounted) return;
   root = r;
-  renderCatalogue();
+  if (window.__folkable_company) {
+    selectedCompany = window.__folkable_company;
+    currentView = 'profile';
+    delete window.__folkable_company;
+    renderCompany();
+  } else {
+    renderCatalogue();
+  }
   mounted = true;
+}
+
+export function onEnter() {
+  if (window.__folkable_company && root) {
+    selectedCompany = window.__folkable_company;
+    currentView = 'profile';
+    delete window.__folkable_company;
+    renderCompany();
+  }
 }
 
 export function unmount() {}
