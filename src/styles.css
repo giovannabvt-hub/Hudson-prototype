@@ -205,89 +205,81 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 .globe-wrap { flex: 1; position: relative; background: var(--bg-globe); transition: flex .3s ease; }
 #globe-el { width: 100%; height: 100%; }
 
-/* List toggle button */
-.disc-list-toggle {
-  font-family:'Cormorant Garamond',serif; font-size:11.5px; letter-spacing:0.06em;
-  color:var(--cream-faint); background:transparent; border:1px solid var(--border);
-  border-radius:1px; padding:3px 10px; cursor:pointer; transition: color .15s, border-color .15s;
-}
-.disc-list-toggle.on { color: var(--gold); border-color: var(--border-hi); }
-
-/* ── DISCOVERY — SIDEBAR LIST ────────────────────────────────────── */
+/* ── DISCOVERY — SIDEBAR ────────────────────────────────────── */
 .disc-sidebar {
   width: 0; overflow: hidden; background: rgba(11,15,13,0.97);
   border-left: 1px solid var(--border); display: flex; flex-direction: column;
   transition: width .3s ease;
 }
-.disc-sidebar.open { width: 340px; }
+.disc-sidebar.open { width: 380px; }
 
 .disc-sidebar-head {
   padding: 14px 18px 10px; border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
 }
-.disc-sidebar-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: var(--cream); }
-.disc-sidebar-count {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gold);
-  background: rgba(139,104,66,0.15); padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(139,104,66,0.25);
+.disc-sidebar-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: var(--gold); }
+.disc-sidebar-close {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border); border-radius: 1px;
+  color: var(--cream-dim); cursor: pointer; font-size: 16px; transition: color .15s, border-color .15s;
 }
+.disc-sidebar-close:hover { color: var(--gold); border-color: var(--gold); }
 
-.disc-sidebar-list { flex: 1; overflow-y: auto; padding: 6px 0; }
+.disc-sidebar-list { flex: 1; overflow-y: auto; padding: 10px 0; }
 .disc-sidebar-list::-webkit-scrollbar { width: 4px; }
 .disc-sidebar-list::-webkit-scrollbar-thumb { background: rgba(139,104,66,0.2); border-radius: 2px; }
 
-.disc-country-group { border-bottom: 1px solid rgba(139,104,66,0.08); }
-.disc-country-name {
-  font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 600;
-  color: var(--cream); padding: 10px 18px 6px; cursor: pointer; display: flex; align-items: center; gap: 8px;
-  transition: color .15s;
+/* Expanded detail card (clicked offering) */
+.disc-detail-card {
+  padding: 14px 18px; transition: background .15s;
 }
-.disc-country-name:hover { color: var(--gold); }
-.disc-country-badge {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--cream-faint);
-  background: rgba(139,104,66,0.1); padding: 1px 6px; border-radius: 8px;
+.disc-detail-card.active {
+  background: rgba(139,104,66,0.08); border-left: 3px solid var(--gold);
+  padding-left: 15px; margin-bottom: 6px;
 }
-
-.disc-item {
-  display: flex; gap: 8px; padding: 6px 18px 8px 24px; cursor: pointer;
-  transition: background .15s;
+.disc-detail-card.compact {
+  cursor: pointer; padding: 10px 18px; border-bottom: 1px solid rgba(139,104,66,0.06);
 }
-.disc-item:hover { background: rgba(139,104,66,0.06); }
+.disc-detail-card.compact:hover { background: rgba(139,104,66,0.06); }
 
-.disc-item-bar { width: 2.5px; flex-shrink: 0; border-radius: 2px; min-height: 28px; }
-.disc-item-bar.disc-cat-event { background: #8B6842; }
-.disc-item-bar.disc-cat-gathering { background: #5C3A1E; }
-
-.disc-item-body { flex: 1; min-width: 0; }
-
-.disc-item-type {
+.disc-detail-cat {
   font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
-  text-transform: uppercase; margin-bottom: 2px;
+  text-transform: uppercase; margin-bottom: 4px;
 }
-.disc-item-type.disc-cat-event { color: #B8960B; }
-.disc-item-type.disc-cat-gathering { color: #8B6842; }
+.disc-detail-cat.disc-cat-event { color: #B8960B; }
+.disc-detail-cat.disc-cat-gathering { color: #8B6842; }
 
-.disc-item-title { font-family: 'Playfair Display', serif; font-size: 12.5px; font-weight: 500; color: var(--cream); line-height: 1.3; }
-.disc-item-meta { font-family: 'Cormorant Garamond', serif; font-size: 11px; color: var(--cream-dim); margin-top: 1px; }
-.disc-item-desc { font-family: 'Cormorant Garamond', serif; font-size: 11.5px; color: rgba(232,220,200,0.45); margin-top: 2px; line-height: 1.4; }
-.disc-item-artist {
-  display: inline-block; margin-top: 4px; font-family: 'Cormorant Garamond', serif;
-  font-size: 11px; color: var(--gold); background: none; border: 1px solid var(--border);
-  padding: 2px 8px; border-radius: 1px; cursor: pointer; transition: all .15s;
+.disc-detail-title {
+  font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600;
+  color: var(--cream); line-height: 1.3; margin-bottom: 6px;
 }
-.disc-item-artist:hover { border-color: var(--gold); }
-
-.disc-item.active { background: rgba(139,104,66,0.12); border-left: 2px solid var(--gold); }
-.disc-item.active .disc-item-title { color: var(--gold); }
-.disc-country-group.active > .disc-country-name { color: var(--gold); }
-.offering-card.highlighted { background: rgba(139,104,66,0.1); border: 1px solid rgba(139,104,66,0.3); border-radius: 2px; }
-
-/* Category tag in detail panel */
-.o-cat-tag {
-  font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
-  text-transform: uppercase; margin-bottom: 3px;
+.disc-detail-title-sm {
+  font-family: 'Playfair Display', serif; font-size: 12.5px; font-weight: 500;
+  color: var(--cream); line-height: 1.3; margin-bottom: 2px;
 }
-.o-cat-tag.disc-cat-event { color: #B8960B; }
-.o-cat-tag.disc-cat-gathering { color: #8B6842; }
+.disc-detail-meta {
+  font-family: 'Cormorant Garamond', serif; font-size: 12px;
+  color: var(--cream-dim); margin-top: 2px; line-height: 1.4;
+}
+.disc-detail-desc {
+  font-family: 'Cormorant Garamond', serif; font-size: 13px;
+  color: rgba(232,220,200,0.55); margin-top: 8px; line-height: 1.5;
+}
+.disc-detail-links {
+  display: flex; flex-direction: column; gap: 6px; margin-top: 12px;
+}
+.disc-detail-link {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  background: rgba(139,104,66,0.06); border: 1px solid var(--border);
+  border-radius: 2px; color: var(--gold); cursor: pointer;
+  font-family: 'Cormorant Garamond', serif; font-size: 13px;
+  transition: all .15s; text-align: left;
+}
+.disc-detail-link:hover { border-color: var(--gold); background: rgba(139,104,66,0.12); }
+.disc-link-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--cream-faint); min-width: 38px;
+}
 
 .tip { position: fixed; pointer-events: none; padding: 7px 12px; background: rgba(13,11,7,0.96); border: 1px solid var(--border-hi); border-radius: 2px; font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--cream); opacity: 0; transition: opacity .12s; z-index: 200; max-width: 280px; line-height: 1.5; }
 
