@@ -53,7 +53,7 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
       globe.htmlElementsData(data)
         .htmlLat('lat')
         .htmlLng('lng')
-        .htmlAltitude(0.018)
+        .htmlAltitude(0.002)
         .htmlElement(d => {
           const wrapper = createElement(d);
           wrapper.addEventListener('click', (e) => {
