@@ -26,6 +26,7 @@ export const sectionSymbols = {
   companies: _bz('<path fill="url(#bz)" d="M12 2L8 6H4v4l-2 2 2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4l-4-4zm0 5a5 5 0 110 10 5 5 0 010-10z"/>'),
   community: _bz('<path fill="url(#bz)" d="M12 2C6.5 2 2 5.8 2 10.5c0 2.7 1.5 5 3.8 6.6L4 22l4.5-2.3c1.1.3 2.3.5 3.5.5 5.5 0 10-3.8 10-8.5S17.5 2 12 2z"/>'),
   roundtable:_bz('<circle fill="none" stroke="url(#bz)" stroke-width="2" cx="12" cy="12" r="10"/><circle fill="url(#bz)" cx="12" cy="5" r="2"/><circle fill="url(#bz)" cx="18.1" cy="9" r="2"/><circle fill="url(#bz)" cx="16" cy="17" r="2"/><circle fill="url(#bz)" cx="8" cy="17" r="2"/><circle fill="url(#bz)" cx="5.9" cy="9" r="2"/>'),
+  about:     _bz('<path fill="url(#bz)" d="M4 2v20h16V6l-4-4H4zm10 0v4h4M7 10h10M7 13h10M7 16h7"/>'),
   story:     _bz('<path fill="url(#bz)" d="M4 2v20h16V6l-4-4H4zm10 0v4h4M7 10h10M7 13h10M7 16h7"/>'),
   general:   _bz('<path fill="url(#bz)" d="M3 3h18v14H8l-5 4v-4H3V3zm5 4h8M8 9h6M8 12h4"/>'),
   events:    _bz('<path fill="url(#bz)" d="M6 2v2H4v16h16V4h-2V2h-3v2H9V2H6zm-2 6h16v10H4V8zm4 3h3v3H8v-3z"/>'),

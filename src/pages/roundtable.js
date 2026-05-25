@@ -1,4 +1,4 @@
-// FolkAble — Round Table (governance + event submission)
+// FolkAble — Round Table (Aragon-powered governance + event submission)
 import { proposals } from '../data/index.js';
 
 const state = { gTab: 'active', votes: {}, showForm: false };
@@ -14,15 +14,47 @@ const TEMPLATE = `
           <h1 class="hero-title">Vote<em> together</em></h1>
         </div>
       </div>
-      <p class="hero-sub" style="margin-top:18px;">FolkAble is run by its members. Events, budgets, onboarding — every meaningful decision passes through the Round Table. One member, one vote.</p>
+      <p class="hero-sub" style="margin-top:18px;">FolkAble is run by its members through <strong>Aragon</strong>, a decentralised governance framework. Events, budgets, onboarding — every meaningful decision passes through the Round Table. One member, one vote. Every action is recorded on-chain and can be verified by anyone.</p>
     </div>
 
-    <div class="gov-stats">
-      <div><div class="gov-stat-label">Total Members</div><div class="gov-stat-val">412</div></div>
-      <div><div class="gov-stat-label">Active Proposals</div><div class="gov-stat-val green">4</div></div>
-      <div><div class="gov-stat-label">Treasury</div><div class="gov-stat-val">€ 84,210</div></div>
-      <div><div class="gov-stat-label">Your Voting Power</div><div class="gov-stat-val">1.00</div></div>
-      <div><div class="gov-stat-label">Quorum Threshold</div><div class="gov-stat-val">103 votes</div></div>
+    <div class="rt-top-bar">
+      <div class="gov-stats">
+        <div><div class="gov-stat-label">Total Members</div><div class="gov-stat-val">412</div></div>
+        <div><div class="gov-stat-label">Active Proposals</div><div class="gov-stat-val green">4</div></div>
+        <div><div class="gov-stat-label">Treasury</div><div class="gov-stat-val">€ 84,210</div></div>
+        <div><div class="gov-stat-label">Your Voting Power</div><div class="gov-stat-val">1.00</div></div>
+        <div><div class="gov-stat-label">Quorum Threshold</div><div class="gov-stat-val">103 votes</div></div>
+      </div>
+
+      <div class="rt-side-panel" id="rt-side-panel">
+        <button class="rt-add-event-btn" id="rt-add-event-toggle">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Add Event / Proposal
+        </button>
+        <div class="rt-event-form" id="rt-event-form" style="display:none;">
+          <h3 class="ef-title">Submit a New Event / Proposal</h3>
+          <div class="ef-row"><label>Title</label><input type="text" placeholder="e.g. Galway Trad Weekend 2026"></div>
+          <div class="ef-row"><label>Type</label><select><option>Event</option><option>Gathering</option><option>Tour</option><option>Treasury</option><option>Onboarding</option><option>Policy</option></select></div>
+          <div class="ef-row"><label>Description</label><textarea rows="3" placeholder="Describe your proposal..."></textarea></div>
+          <div class="ef-row"><label>Country</label><input type="text" placeholder="e.g. Ireland"></div>
+          <div class="ef-row"><label>Date</label><input type="date"></div>
+          <div class="ef-row"><label>Ticket Link (external)</label><input type="url" placeholder="https://tickets.example.com/..."></div>
+          <div class="ef-row"><label>Options for Vote</label><input type="text" placeholder="For, Against, Abstain (comma separated)"></div>
+          <div class="ef-actions">
+            <button class="landing-btn primary" id="ef-submit">Submit for Review</button>
+            <button class="landing-btn secondary" id="ef-cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aragon-info-bar">
+      <div class="aragon-info-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L3 5.5v4c0 4.2 2.6 8.1 6 9 3.4-.9 6-4.8 6-9v-4L9 2z" stroke="#C9A24D" stroke-width="1.2" fill="none"/><path d="M6.5 9l2 2 3-3.5" stroke="#C9A24D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="aragon-info-text">
+        <strong>Powered by Aragon</strong> — All votes are recorded on-chain. Treasury movements are publicly verifiable. Proposals follow a 48-hour review window before opening for vote. <a href="#about" class="aragon-info-link">Learn more in About Us</a>
+      </div>
     </div>
 
     <div class="gov-tabs">
@@ -33,27 +65,28 @@ const TEMPLATE = `
 
     <div class="proposals" id="proposals"></div>
 
-    <div class="gov-cta-bar" id="gov-cta-bar">
-      <div class="gov-cta-text">
-        <strong>Have a proposal?</strong>
-        Anyone with member status can submit a proposal or event. Drafts go through a 48-hour review window before opening for vote.
-      </div>
-      <button class="prop-cta" id="new-proposal-btn">+ New Proposal</button>
-    </div>
-
-    <div class="event-form-wrap" id="event-form-wrap" style="display:none;">
-      <div class="event-form">
-        <h3 class="ef-title">Submit a New Event / Proposal</h3>
-        <div class="ef-row"><label>Title</label><input type="text" placeholder="e.g. Galway Trad Weekend 2026"></div>
-        <div class="ef-row"><label>Type</label><select><option>Event</option><option>Gathering</option><option>Tour</option><option>Treasury</option><option>Onboarding</option><option>Policy</option></select></div>
-        <div class="ef-row"><label>Description</label><textarea rows="3" placeholder="Describe your proposal..."></textarea></div>
-        <div class="ef-row"><label>Country</label><input type="text" placeholder="e.g. Ireland"></div>
-        <div class="ef-row"><label>Date</label><input type="date"></div>
-        <div class="ef-row"><label>Ticket Link (external)</label><input type="url" placeholder="https://tickets.example.com/..."></div>
-        <div class="ef-row"><label>Options for Vote</label><input type="text" placeholder="For, Against, Abstain (comma separated)"></div>
-        <div class="ef-actions">
-          <button class="landing-btn primary" id="ef-submit">Submit for Review</button>
-          <button class="landing-btn secondary" id="ef-cancel">Cancel</button>
+    <div class="rt-aragon-section">
+      <h3 class="rt-aragon-heading">How Aragon Governance Works</h3>
+      <div class="rt-aragon-grid">
+        <div class="rt-aragon-step">
+          <div class="rt-aragon-step-num">1</div>
+          <h4>Propose</h4>
+          <p>Any member can submit a proposal or event. Drafts enter a 48-hour review window where the community can discuss before voting opens.</p>
+        </div>
+        <div class="rt-aragon-step">
+          <div class="rt-aragon-step-num">2</div>
+          <h4>Vote</h4>
+          <p>Once the review period ends, voting opens. Each member casts one vote. All votes are recorded on Aragon's smart contracts -- immutable and verifiable.</p>
+        </div>
+        <div class="rt-aragon-step">
+          <div class="rt-aragon-step-num">3</div>
+          <h4>Execute</h4>
+          <p>If quorum is met and the proposal passes, the decision is executed automatically. Treasury allocations move through Aragon's vault -- no manual intervention needed.</p>
+        </div>
+        <div class="rt-aragon-step">
+          <div class="rt-aragon-step-num">4</div>
+          <h4>Verify</h4>
+          <p>Every action is logged on-chain. Any member can audit voting records, treasury movements, and governance history at any time through the public ledger.</p>
         </div>
       </div>
     </div>
@@ -157,21 +190,19 @@ export function mount(r) {
     b.classList.add('active'); state.gTab = b.dataset.gtab; renderProposals();
   }));
 
-  // New proposal form toggle
-  document.getElementById('new-proposal-btn').addEventListener('click', () => {
-    document.getElementById('event-form-wrap').style.display = 'block';
-    document.getElementById('gov-cta-bar').style.display = 'none';
+  // Add Event side panel toggle
+  document.getElementById('rt-add-event-toggle').addEventListener('click', () => {
+    const form = document.getElementById('rt-event-form');
+    const isOpen = form.style.display !== 'none';
+    form.style.display = isOpen ? 'none' : 'block';
   });
 
   document.getElementById('ef-cancel').addEventListener('click', () => {
-    document.getElementById('event-form-wrap').style.display = 'none';
-    document.getElementById('gov-cta-bar').style.display = 'flex';
+    document.getElementById('rt-event-form').style.display = 'none';
   });
 
   document.getElementById('ef-submit').addEventListener('click', () => {
-    document.getElementById('event-form-wrap').style.display = 'none';
-    document.getElementById('gov-cta-bar').style.display = 'flex';
-    // In a real app, this would submit to a backend
+    document.getElementById('rt-event-form').style.display = 'none';
     alert('Proposal submitted for 48-hour review!');
   });
 

@@ -14,7 +14,7 @@ const TEMPLATE = `
       <p class="landing-desc">Discover events, support folk artists, join gatherings, and shape the future of folk traditions through collective governance. Built by artists, for artists and their audiences.</p>
       <div class="landing-ctas">
         <a class="landing-btn primary" href="#discovery">Explore the Globe</a>
-        <a class="landing-btn secondary" href="#story">Our Story</a>
+        <a class="landing-btn secondary" href="#about">About Us</a>
       </div>
       <div class="landing-stats">
         <div class="landing-stat"><strong>184</strong><span>Members</span></div>
@@ -67,7 +67,7 @@ const features = [
   { key:'companies', href:'#companies', title:'Companies', desc:'Independent collectives and labels publish news, events, and releases from their own dedicated pages.' },
   { key:'community', href:'#community', title:'Community', desc:'A server for all members. Chat in general channels or filter by artist and topic.' },
   { key:'roundtable',href:'#roundtable',title:'Round Table', desc:'Snapshot-style governance. Vote on events, budgets, and proposals. Every member has a voice.' },
-  { key:'story',     href:'#story',     title:'Our Story', desc:'Learn how Hudson Records built FolkAble to connect folk artists worldwide.' },
+  { key:'about',     href:'#about',     title:'About Us', desc:'Learn how Hudson Records built FolkAble, our governance through Aragon, and download the White Paper.' },
 ];
 
 export function mount(root) {

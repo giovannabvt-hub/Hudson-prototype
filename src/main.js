@@ -13,7 +13,7 @@ const app = document.getElementById('app');
 
 const PAGES = [
   { name: 'home',       id: 'page-home',       mod: home },
-  { name: 'story',      id: 'page-story',      mod: story },
+  { name: 'about',      id: 'page-about',      mod: story },
   { name: 'discovery',  id: 'page-discovery',  mod: discovery },
   { name: 'artists',    id: 'page-artists',    mod: artists },
   { name: 'companies',  id: 'page-companies',  mod: companies },

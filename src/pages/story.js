@@ -1,4 +1,4 @@
-// FolkAble — Story page (About Hudson Records & mission)
+// FolkAble — About Us page (origins, Aragon governance, white paper)
 import { companySymbols } from '../data/index.js';
 
 let mounted = false;
@@ -29,7 +29,7 @@ export function mount(root) {
   root.innerHTML = `
 <div class="page-scroll">
   <section class="story-hero">
-    <span class="landing-eyebrow">The Story</span>
+    <span class="landing-eyebrow">About Us</span>
     <h1 class="story-title">How <span class="t-accent">F</span><span class="t-olk">olk</span><span class="t-accent">Able</span> Came to Be</h1>
     <p class="story-subtitle">Born from a Sheffield record label's belief that folk art thrives when artists lead, communities gather, and creativity comes first.</p>
   </section>
@@ -75,7 +75,7 @@ export function mount(root) {
         <div class="story-principle">
           <div class="sp-num">02</div>
           <h3>Collective Governance</h3>
-          <p>Budget allocation, event approval, new member onboarding -- every significant decision goes through a transparent voting process at the Round Table.</p>
+          <p>Budget allocation, event approval, new member onboarding -- every significant decision goes through a transparent voting process at the Round Table, powered by Aragon.</p>
         </div>
         <div class="story-principle">
           <div class="sp-num">03</div>
@@ -88,10 +88,65 @@ export function mount(root) {
 
   <section class="story-section">
     <div class="story-block">
+      <div class="story-label">Governance</div>
+      <h2 class="story-h2">Transparent by Design -- Powered by Aragon</h2>
+      <p>FolkAble's governance is built on Aragon, a leading framework for decentralised organisations. Every decision made on the platform -- from treasury allocations to event approvals -- is recorded transparently and can be verified by any member.</p>
+
+      <div class="aragon-features">
+        <div class="aragon-card">
+          <div class="aragon-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3L4 8v6c0 6.6 4.3 12.7 10 14 5.7-1.3 10-7.4 10-14V8L14 3z" stroke="#C9A24D" stroke-width="1.5" fill="none"/><path d="M10 14l3 3 5-6" stroke="#C9A24D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>On-Chain Voting</h3>
+          <p>Every proposal and vote is recorded on-chain through Aragon's smart contracts. Results are immutable -- no one can alter a vote after it is cast. Members can verify any decision at any time.</p>
+        </div>
+        <div class="aragon-card">
+          <div class="aragon-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="6" width="22" height="16" rx="2" stroke="#C9A24D" stroke-width="1.5" fill="none"/><path d="M3 11h22M8 16h4M8 19h8" stroke="#C9A24D" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Treasury Transparency</h3>
+          <p>The FolkAble treasury is managed through Aragon's vault system. Every inflow and outflow is publicly visible. Members vote on how funds are allocated -- whether for artist grants, event funding, or platform development.</p>
+        </div>
+        <div class="aragon-card">
+          <div class="aragon-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="4" stroke="#C9A24D" stroke-width="1.5" fill="none"/><path d="M7 22c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#C9A24D" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="8" r="3" stroke="#C9A24D" stroke-width="1.2" fill="none"/><circle cx="6" cy="8" r="3" stroke="#C9A24D" stroke-width="1.2" fill="none"/></svg>
+          </div>
+          <h3>Member Equality</h3>
+          <p>One member, one vote. Aragon's token-weighted or membership-based governance models ensure that every voice carries equal weight. No single entity can override the collective will.</p>
+        </div>
+        <div class="aragon-card">
+          <div class="aragon-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4v20M4 14h20" stroke="#C9A24D" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="14" r="10" stroke="#C9A24D" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="3" fill="#C9A24D" opacity="0.3"/></svg>
+          </div>
+          <h3>Open Audit Trail</h3>
+          <p>All governance activity is logged and publicly accessible. Proposal histories, voting records, and treasury movements form a permanent, tamper-proof audit trail that anyone can inspect.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story-section story-dark">
+    <div class="story-block">
       <div class="story-label">The Network</div>
       <h2 class="story-h2">7 Labels, 18 Countries, One Community</h2>
       <div class="story-network">
         ${networkHtml}
+      </div>
+    </div>
+  </section>
+
+  <section class="story-section">
+    <div class="story-block">
+      <div class="story-label">White Paper</div>
+      <h2 class="story-h2">Read the FolkAble White Paper</h2>
+      <p>The FolkAble White Paper outlines the full architecture of the platform -- its governance model built on Aragon, the treasury and funding mechanisms, the artist sovereignty framework, the community moderation system, and the technical infrastructure that makes it all work.</p>
+      <p>Whether you are a potential member, a partner organisation, or simply curious about how a decentralised arts platform operates, this document provides a comprehensive overview of the rules, systems, and principles that guide FolkAble.</p>
+      <div class="wp-download-wrap">
+        <a class="wp-download-btn" href="/folkable-whitepaper.pdf" target="_blank" rel="noopener">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3v12M7 11l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 15v3a1 1 0 001 1h14a1 1 0 001-1v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Download White Paper (PDF)
+        </a>
+        <span class="wp-note">Document covers governance, treasury, membership, and platform architecture.</span>
       </div>
     </div>
   </section>
