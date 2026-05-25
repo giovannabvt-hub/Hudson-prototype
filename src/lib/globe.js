@@ -35,7 +35,9 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
 
   return {
     setCapColor(fn) { globe.polygonCapColor(d => fn(d.properties.name)); },
-    setMarkers({ data, ringColor, ringMaxRadius, ringPropagationSpeed, ringRepeatPeriod, pointColor, pointRadius }) {
+
+    setMarkers({ data, ringColor, ringMaxRadius, ringPropagationSpeed, ringRepeatPeriod, pointColor }) {
+      // Pulsing rings
       globe.ringsData(data)
         .ringLat('lat').ringLng('lng')
         .ringColor(ringColor)
@@ -43,28 +45,31 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
         .ringPropagationSpeed(ringPropagationSpeed)
         .ringRepeatPeriod(ringRepeatPeriod)
         .ringAltitude(0.005);
-      globe.pointsData(data)
-        .pointLat('lat').pointLng('lng')
-        .pointColor(pointColor)
-        .pointAltitude(0.014)
-        .pointRadius(pointRadius)
-        .pointResolution(12)
-        .onPointHover(onPointHover)
-        .onPointClick(onPointClick);
     },
-    setLabels({ data, onLabelClick }) {
-      globe.labelsData(data)
-        .labelLat('lat').labelLng('lng')
-        .labelText('title')
-        .labelSize(d => d.category === 'event' ? 0.7 : 0.6)
-        .labelDotRadius(0.3)
-        .labelColor(d => d.category === 'event' ? () => 'rgba(184,134,11,0.92)' : () => 'rgba(139,104,66,0.88)')
-        .labelDotOrientation(() => 'bottom')
-        .labelResolution(3)
-        .labelAltitude(0.018)
-        .onLabelClick(onLabelClick || (() => {}))
-        .onLabelHover(onPointHover || (() => {}));
+
+    // Use htmlElementsData to render real DOM labels on the globe
+    // These are actual HTML elements the user can see, hover, and click
+    setHtmlLabels({ data, createElement, onHover, onClick }) {
+      globe.htmlElementsData(data)
+        .htmlLat('lat')
+        .htmlLng('lng')
+        .htmlAltitude(0.018)
+        .htmlElement(d => {
+          const wrapper = createElement(d);
+          wrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (onClick) onClick(d);
+          });
+          wrapper.addEventListener('mouseenter', () => {
+            if (onHover) onHover(d, wrapper);
+          });
+          wrapper.addEventListener('mouseleave', () => {
+            if (onHover) onHover(null, null);
+          });
+          return wrapper;
+        });
     },
+
     setRotate(b) { globe.controls().autoRotate = b; },
   };
 }
