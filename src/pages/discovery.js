@@ -70,17 +70,39 @@ function refreshGlobe() {
       const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
       return `rgba(${r},${g},${b},${(1-t)})`;
     },
-    ringMaxRadius: 2.6,
+    ringMaxRadius: 3,
     ringPropagationSpeed: 2.4,
     ringRepeatPeriod: 1600,
     pointColor: d => catColors[d.category] || '#8B6842',
-    pointRadius: 0.32,
+    pointRadius: 0.7,
+    onPointHover: showOfferingTooltip,
+    onPointClick: d => { if (d) openOfferingSidebar(d); },
   });
 
   globeApi.setLabels({
     data,
-    onLabelClick: d => openOfferingSidebar(d),
+    onLabelClick: d => { if (d) openOfferingSidebar(d); },
+    onLabelHover: showOfferingTooltip,
   });
+}
+
+/* Show tooltip for an offering (used by point hover AND label hover) */
+function showOfferingTooltip(d) {
+  const tip = document.getElementById('tip');
+  if (!d) { tip.style.opacity = '0'; return; }
+  const catLabel = d.category === 'event' ? 'Event' : 'Gathering';
+  const artist = artists.find(a => a.id === d.artist);
+  const artistName = artist ? artist.name : '';
+  tip.innerHTML = `
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:${catColors[d.category]};margin-bottom:3px;">${catLabel}</div>
+    <strong style="font-family:'Playfair Display',serif;font-size:14px;">${d.title}</strong>
+    <br><span style="font-size:11.5px;color:rgba(232,220,200,0.72);">${d.member} -- ${d.country}</span>
+    <br><span style="font-size:11px;color:rgba(232,220,200,0.52);">${d.date} -- ${d.price}</span>
+    ${d.desc ? `<br><span style="font-size:11px;color:rgba(232,220,200,0.42);line-height:1.4;display:block;margin-top:3px;">${d.desc}</span>` : ''}
+    ${artistName ? `<br><span style="font-size:10.5px;color:${catColors[d.category]};margin-top:2px;display:block;">by ${artistName}</span>` : ''}
+    <div style="font-size:9px;color:rgba(232,220,200,0.28);margin-top:4px;text-transform:uppercase;letter-spacing:0.1em;">click for details</div>
+  `;
+  tip.style.opacity = '1';
 }
 
 /* Close the sidebar */
@@ -234,23 +256,6 @@ export function mount(root) {
         tip.style.opacity = '1';
       },
       onPolygonClick: p => openCountrySidebar(p.properties.name),
-      onPointHover: p => {
-        if (!p) { tip.style.opacity = '0'; return; }
-        const catLabel = p.category === 'event' ? 'Event' : 'Gathering';
-        const artist = artists.find(a => a.id === p.artist);
-        const artistName = artist ? artist.name : '';
-        tip.innerHTML = `
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:${catColors[p.category]};margin-bottom:3px;">${catLabel}</div>
-          <strong style="font-family:'Playfair Display',serif;font-size:14px;">${p.title}</strong>
-          <br><span style="font-size:11.5px;color:rgba(232,220,200,0.72);">${p.member} -- ${p.country}</span>
-          <br><span style="font-size:11px;color:rgba(232,220,200,0.52);">${p.date} -- ${p.price}</span>
-          ${p.desc ? `<br><span style="font-size:11px;color:rgba(232,220,200,0.42);line-height:1.4;display:block;margin-top:3px;">${p.desc}</span>` : ''}
-          ${artistName ? `<br><span style="font-size:10.5px;color:${catColors[p.category]};margin-top:2px;display:block;">by ${artistName}</span>` : ''}
-          <div style="font-size:9px;color:rgba(232,220,200,0.28);margin-top:4px;text-transform:uppercase;letter-spacing:0.1em;">click for details</div>
-        `;
-        tip.style.opacity = '1';
-      },
-      onPointClick: d => openOfferingSidebar(d),
     });
   }
   refreshGlobe();
