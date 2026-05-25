@@ -22,7 +22,6 @@ const TEMPLATE = `
       <span class="chip on" data-cat="gathering"><span class="chip-dot" style="background:#5C3A1E;"></span>Gatherings</span>
     </div>
     <div class="ctrl-spacer"></div>
-    <button class="disc-list-toggle on" id="disc-list-toggle">Globe Only</button>
     <button class="rotate-btn on" id="rotate-btn">Auto-rotate</button>
   </div>
 
@@ -214,21 +213,6 @@ export function mount(root) {
     state.rotate = !state.rotate;
     this.classList.toggle('on', state.rotate);
     if (globeApi) globeApi.setRotate(state.rotate);
-  });
-
-  // List view toggle (sidebar)
-  document.getElementById('disc-list-toggle').addEventListener('click', function() {
-    const sidebar = document.getElementById('disc-sidebar');
-    sidebar.classList.toggle('open');
-    this.classList.toggle('on');
-    this.textContent = sidebar.classList.contains('open') ? 'Globe Only' : 'Show List';
-    // Re-render globe size after sidebar toggle
-    setTimeout(() => {
-      const el = document.getElementById('globe-el');
-      if (globeApi && el) {
-        globeApi.setRotate && window.dispatchEvent(new Event('resize'));
-      }
-    }, 350);
   });
 
   // Detail close
