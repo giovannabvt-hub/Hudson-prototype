@@ -1,10 +1,10 @@
-// Globe wrapper around globe.gl + topojson-client. Imperative — exposes init() + refresh().
+// Globe wrapper around globe.gl + topojson-client
 import Globe from 'globe.gl';
 import * as topojson from 'topojson-client';
 
 let globe = null;
 
-export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPointClick, onLabelClick }) {
+export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPointClick }) {
   globe = Globe()(el)
     .width(el.clientWidth)
     .height(el.clientHeight)
@@ -35,36 +35,44 @@ export function init({ el, onPolygonHover, onPolygonClick, onPointHover, onPoint
 
   return {
     setCapColor(fn) { globe.polygonCapColor(d => fn(d.properties.name)); },
-    setMarkers({ data, ringColor, ringMaxRadius, ringPropagationSpeed, ringRepeatPeriod, pointColor, pointRadius, onPointHover, onPointClick }) {
+
+    setHotspots({ data, pointColor, onHover, onClick }) {
+      // Pulsing rings
       globe.ringsData(data)
         .ringLat('lat').ringLng('lng')
-        .ringColor(ringColor)
-        .ringMaxRadius(ringMaxRadius)
-        .ringPropagationSpeed(ringPropagationSpeed)
-        .ringRepeatPeriod(ringRepeatPeriod)
-        .ringAltitude(0.005);
+        .ringColor(d => t => {
+          const c = d._ringRgb || [139,104,66];
+          return `rgba(${c[0]},${c[1]},${c[2]},${(1 - t) * 0.7})`;
+        })
+        .ringMaxRadius(3)
+        .ringPropagationSpeed(2)
+        .ringRepeatPeriod(1800)
+        .ringAltitude(0.004);
+
+      // Visible, clickable dot
       globe.pointsData(data)
         .pointLat('lat').pointLng('lng')
         .pointColor(pointColor)
-        .pointAltitude(0.025)
-        .pointRadius(pointRadius)
+        .pointAltitude(0.012)
+        .pointRadius(0.35)
         .pointResolution(12)
-        .onPointHover(onPointHover || (() => {}))
-        .onPointClick(onPointClick || (() => {}));
-    },
-    setLabels({ data, onLabelClick, onLabelHover }) {
+        .onPointHover(onHover)
+        .onPointClick(onClick);
+
+      // Text labels on globe surface
       globe.labelsData(data)
         .labelLat('lat').labelLng('lng')
         .labelText('title')
-        .labelSize(d => d.category === 'event' ? 0.9 : 0.75)
-        .labelDotRadius(0.45)
-        .labelColor(d => d.category === 'event' ? () => 'rgba(184,134,11,0.92)' : () => 'rgba(139,104,66,0.88)')
+        .labelSize(0.55)
+        .labelDotRadius(0)
+        .labelColor(() => () => 'rgba(232,220,200,0.6)')
         .labelDotOrientation(() => 'bottom')
         .labelResolution(3)
-        .labelAltitude(0.022)
-        .onLabelClick(onLabelClick || (() => {}))
-        .onLabelHover(onLabelHover || (() => {}));
+        .labelAltitude(0.016)
+        .onLabelHover(onHover)
+        .onLabelClick(onClick);
     },
+
     setRotate(b) { globe.controls().autoRotate = b; },
   };
 }
