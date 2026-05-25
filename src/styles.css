@@ -276,6 +276,11 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 }
 .disc-item-artist:hover { border-color: var(--gold); }
 
+.disc-item.active { background: rgba(139,104,66,0.12); border-left: 2px solid var(--gold); }
+.disc-item.active .disc-item-title { color: var(--gold); }
+.disc-country-group.active > .disc-country-name { color: var(--gold); }
+.offering-card.highlighted { background: rgba(139,104,66,0.1); border: 1px solid rgba(139,104,66,0.3); border-radius: 2px; }
+
 /* Category tag in detail panel */
 .o-cat-tag {
   font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
@@ -287,8 +292,8 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 .tip { position: fixed; pointer-events: none; padding: 7px 12px; background: rgba(13,11,7,0.96); border: 1px solid var(--border-hi); border-radius: 2px; font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--cream); opacity: 0; transition: opacity .12s; z-index: 200; max-width: 280px; line-height: 1.5; }
 
 .detail-panel {
-  position: fixed; top: 98px; bottom: 0; right: 0; width: 370px; z-index: 100;
-  background: rgba(11,15,13,0.97); border-left: 1px solid var(--border);
+  position: fixed; top: 98px; bottom: 0; right: 340px; width: 370px; z-index: 100;
+  background: rgba(11,15,13,0.97); border-left: 1px solid var(--border); border-right: 1px solid var(--border);
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   display: flex; flex-direction: column; overflow: hidden;
   transition: transform .32s cubic-bezier(.4,0,.2,1); transform: translateX(100%);
@@ -581,7 +586,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   .disc-sidebar { width: 0 !important; height: 0; border-left: none; border-top: 1px solid var(--border); }
   .disc-sidebar.open { width: 100% !important; height: 45%; }
   .globe-wrap { flex: 1; }
-  .detail-panel { width: 100% !important; top: 50px; }
+  .detail-panel { width: 100% !important; top: 50px; right: 0 !important; }
   .legend { bottom: 10px; padding: 5px 12px; gap: 8px; font-size: 10px; flex-wrap: wrap; justify-content: center; max-width: 95vw; }
   .leg-hint { display: none; }
 
@@ -626,3 +631,4 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   .landing-title { font-size: 34px; }
   .hero-title, .story-title { font-size: 28px; }
 }
+
