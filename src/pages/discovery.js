@@ -80,7 +80,7 @@ function refreshGlobe() {
   // Add text labels on the globe
   globeApi.setLabels({
     data,
-    onLabelClick: d => showCountryDetail(d.country),
+    onLabelClick: d => highlightOffering(d),
   });
 
   // Update sidebar list
@@ -106,13 +106,13 @@ function renderSidebar(data) {
   list.innerHTML = countries.map(country => {
     const items = grouped[country];
     return `
-      <div class="disc-country-group">
+      <div class="disc-country-group" data-country-group="${country}">
         <div class="disc-country-name" data-country="${country}">${country} <span class="disc-country-badge">${items.length}</span></div>
         ${items.map(o => {
           const catClass = o.category === 'event' ? 'disc-cat-event' : 'disc-cat-gathering';
           const artist = artists.find(a => a.id === o.artist);
           return `
-            <div class="disc-item" data-country="${o.country}">
+            <div class="disc-item" data-offering-title="${o.title}" data-country="${o.country}">
               <div class="disc-item-bar ${catClass}"></div>
               <div class="disc-item-body">
                 <div class="disc-item-type ${catClass}">${o.category}</div>
@@ -128,14 +128,16 @@ function renderSidebar(data) {
     `;
   }).join('');
 
-  // Bind country group clicks -> open detail panel
+  // Bind country group clicks -> highlight all in that country
   list.querySelectorAll('.disc-country-name').forEach(el => {
-    el.addEventListener('click', () => showCountryDetail(el.dataset.country));
+    el.addEventListener('click', () => highlightCountry(el.dataset.country));
   });
 
-  // Bind item clicks -> open detail panel for that country
+  // Bind item clicks -> highlight that specific item
   list.querySelectorAll('.disc-item').forEach(el => {
-    el.addEventListener('click', () => showCountryDetail(el.dataset.country));
+    el.addEventListener('click', () => {
+      highlightItem(el);
+    });
   });
 
   // Bind artist links
@@ -148,7 +150,67 @@ function renderSidebar(data) {
   });
 }
 
-function showCountryDetail(name) {
+/* Highlight a specific offering when clicking a dot/label on the globe */
+function highlightOffering(d) {
+  const list = document.getElementById('disc-sidebar-list');
+  if (!list) return;
+
+  // Clear previous highlights
+  list.querySelectorAll('.disc-item.active').forEach(el => el.classList.remove('active'));
+  list.querySelectorAll('.disc-country-group.active').forEach(el => el.classList.remove('active'));
+
+  // Find the matching item by title
+  const item = list.querySelector(`.disc-item[data-offering-title="${d.title}"]`);
+  if (item) {
+    item.classList.add('active');
+    // Also highlight the country group
+    const group = item.closest('.disc-country-group');
+    if (group) group.classList.add('active');
+    // Scroll into view
+    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Also show the detail panel for full info
+  showCountryDetail(d.country, d.title);
+}
+
+/* Highlight all offerings in a country (clicking country name in sidebar) */
+function highlightCountry(country) {
+  const list = document.getElementById('disc-sidebar-list');
+  if (!list) return;
+
+  // Clear previous highlights
+  list.querySelectorAll('.disc-item.active').forEach(el => el.classList.remove('active'));
+  list.querySelectorAll('.disc-country-group.active').forEach(el => el.classList.remove('active'));
+
+  // Highlight the country group
+  const group = list.querySelector(`.disc-country-group[data-country-group="${country}"]`);
+  if (group) {
+    group.classList.add('active');
+    group.querySelectorAll('.disc-item').forEach(el => el.classList.add('active'));
+    group.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  showCountryDetail(country);
+}
+
+/* Highlight a single item when clicking it in the sidebar */
+function highlightItem(el) {
+  const list = document.getElementById('disc-sidebar-list');
+  if (!list) return;
+
+  // Clear previous highlights
+  list.querySelectorAll('.disc-item.active').forEach(el => el.classList.remove('active'));
+  list.querySelectorAll('.disc-country-group.active').forEach(el => el.classList.remove('active'));
+
+  el.classList.add('active');
+  const group = el.closest('.disc-country-group');
+  if (group) group.classList.add('active');
+
+  showCountryDetail(el.dataset.country, el.dataset.offeringTitle);
+}
+
+function showCountryDetail(name, focusTitle) {
   const offs = offerings.filter(o => o.country === name && state.cats.has(o.category));
   const dpTitle = document.getElementById('dp-title');
   const dpSub = document.getElementById('dp-sub');
@@ -164,8 +226,9 @@ function showCountryDetail(name) {
     dpBody.innerHTML = offs.map(o => {
       const artist = artists.find(a => a.id === o.artist);
       const catClass = o.category === 'event' ? 'disc-cat-event' : 'disc-cat-gathering';
+      const isHighlighted = focusTitle && o.title === focusTitle;
       return `
-      <div class="offering-card">
+      <div class="offering-card ${isHighlighted ? 'highlighted' : ''}">
         <div class="o-bar" style="background:${catColors[o.category]};"></div>
         <div style="flex:1;min-width:0;">
           <div class="o-cat-tag ${catClass}">${o.category}</div>
@@ -216,7 +279,15 @@ export function mount(root) {
   });
 
   // Detail close
-  document.getElementById('dp-close').addEventListener('click', () => document.getElementById('detail-panel').classList.remove('open'));
+  document.getElementById('dp-close').addEventListener('click', () => {
+    document.getElementById('detail-panel').classList.remove('open');
+    // Also clear sidebar highlights
+    const list = document.getElementById('disc-sidebar-list');
+    if (list) {
+      list.querySelectorAll('.disc-item.active').forEach(el => el.classList.remove('active'));
+      list.querySelectorAll('.disc-country-group.active').forEach(el => el.classList.remove('active'));
+    }
+  });
 
   // Tooltip
   document.body.addEventListener('mousemove', e => {
@@ -245,14 +316,14 @@ export function mount(root) {
         tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${n}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${details.join(', ')}</span>`;
         tip.style.opacity = '1';
       },
-      onPolygonClick: p => showCountryDetail(p.properties.name),
+      onPolygonClick: p => highlightCountry(p.properties.name),
       onPointHover: p => {
         if (!p) { tip.style.opacity = '0'; return; }
         const catLabel = p.category === 'event' ? 'Event' : 'Gathering';
         tip.innerHTML = `<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:${catColors[p.category]};margin-bottom:3px;">${catLabel}</div><strong style="font-family:'Playfair Display',serif;">${p.title}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${p.member} -- ${p.country}</span><br><span style="font-size:11px;color:rgba(232,220,200,0.42);">${p.date} -- ${p.price}</span>`;
         tip.style.opacity = '1';
       },
-      onPointClick: d => showCountryDetail(d.country),
+      onPointClick: d => highlightOffering(d),
     });
   }
   refreshGlobe();
