@@ -1,9 +1,8 @@
 // FolkAble — Discovery page
-// Globe with labelled dots. Hover = info window. Click = detail sidebar.
+// Globe with HTML labels on each dot. Hover = info tooltip. Click = detail sidebar.
 import { offerings, catColors, artists, companies, companyMap, motifs } from '../data/index.js';
 import { init as initGlobe } from '../lib/globe.js';
 import { playMotif, startWave, resetWave } from '../lib/audio.js';
-import { hexToRgba } from '../lib/utils.js';
 import { go } from '../lib/router.js';
 
 const state = {
@@ -50,11 +49,56 @@ function visibleOfferings() {
   return offerings.filter(o => state.cats.has(o.category));
 }
 
+/* ── Create the HTML element for each dot on the globe ──── */
+
+function createDotElement(d) {
+  const el = document.createElement('div');
+  el.className = 'globe-dot';
+
+  const color = catColors[d.category] || '#8B6842';
+  const catText = d.category === 'event' ? 'Event' : 'Gathering';
+  const artist = artists.find(a => a.id === d.artist);
+
+  el.innerHTML = `
+    <div class="globe-dot-pin" style="background:${color};box-shadow:0 0 6px ${color}88;"></div>
+    <div class="globe-dot-label">
+      <span class="globe-dot-title">${d.title}</span>
+      <span class="globe-dot-sub">${catText}${artist ? ' -- ' + artist.name : ''}</span>
+    </div>
+  `;
+
+  return el;
+}
+
+/* ── Hover tooltip ───────────────────────────────────────── */
+
+function showTooltip(d) {
+  const tip = document.getElementById('tip');
+  if (!d) { tip.style.opacity = '0'; return; }
+
+  const catLabel = d.category === 'event' ? 'Event' : 'Gathering';
+  const artist = artists.find(a => a.id === d.artist);
+
+  tip.innerHTML = `
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:${catColors[d.category]};margin-bottom:4px;">${catLabel}</div>
+    <strong style="font-family:'Playfair Display',serif;font-size:14px;line-height:1.3;display:block;">${d.title}</strong>
+    <span style="font-size:12px;color:rgba(232,220,200,0.7);display:block;margin-top:3px;">${d.member} -- ${d.country}</span>
+    <span style="font-size:11px;color:rgba(232,220,200,0.5);display:block;margin-top:2px;">${d.date} -- ${d.price}</span>
+    <span style="font-size:11.5px;color:rgba(232,220,200,0.42);display:block;margin-top:4px;line-height:1.4;">${d.desc}</span>
+    ${artist ? `<span style="font-size:11px;color:${catColors[d.category]};display:block;margin-top:5px;">by ${artist.name}</span>` : ''}
+    <span style="font-size:9px;color:rgba(232,220,200,0.25);display:block;margin-top:6px;text-transform:uppercase;letter-spacing:0.1em;">click for details</span>
+  `;
+  tip.style.opacity = '1';
+}
+
+/* ── Refresh globe data ──────────────────────────────────── */
+
 function refreshGlobe() {
   if (!globeApi) return;
   globeApi.setCapColor(countryFill);
   const data = visibleOfferings();
 
+  // Pulsing rings only (no points layer — htmlElements replaces them)
   globeApi.setMarkers({
     data,
     ringColor: d => t => {
@@ -67,12 +111,14 @@ function refreshGlobe() {
     ringPropagationSpeed: 2.4,
     ringRepeatPeriod: 1600,
     pointColor: d => catColors[d.category] || '#8B6842',
-    pointRadius: 0.32,
   });
 
-  globeApi.setLabels({
+  // Real HTML labels on each dot — these are visible, hoverable, clickable
+  globeApi.setHtmlLabels({
     data,
-    onLabelClick: d => openDetail(d),
+    createElement: createDotElement,
+    onHover: showTooltip,
+    onClick: openDetail,
   });
 }
 
@@ -84,7 +130,6 @@ function openDetail(d) {
   const company = companyId ? companies.find(c => c.id === companyId) : null;
   const catLabel = d.category === 'event' ? 'Event' : 'Gathering';
 
-  // Also show other offerings in same country
   const related = offerings.filter(o => o.country === d.country && o.title !== d.title && state.cats.has(o.category));
 
   const dpTitle = document.getElementById('dp-title');
@@ -209,17 +254,17 @@ export function mount(root) {
     document.getElementById('detail-panel').classList.remove('open');
   });
 
-  // ESC to close detail
+  // ESC to close
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') document.getElementById('detail-panel').classList.remove('open');
   });
 
   // Tooltip follows cursor
-  const tip = document.getElementById('tip');
   document.body.addEventListener('mousemove', e => {
-    let nx = e.clientX + 14, ny = e.clientY + 14;
-    if (nx + 280 > window.innerWidth)  nx = e.clientX - 280;
-    if (ny + 80  > window.innerHeight) ny = e.clientY - 80;
+    const tip = document.getElementById('tip');
+    let nx = e.clientX + 16, ny = e.clientY + 16;
+    if (nx + 300 > window.innerWidth)  nx = e.clientX - 300;
+    if (ny + 100 > window.innerHeight) ny = e.clientY - 100;
     tip.style.left = nx + 'px';
     tip.style.top = ny + 'px';
   });
@@ -229,37 +274,16 @@ export function mount(root) {
     globeApi = initGlobe({
       el: document.getElementById('globe-el'),
       onPolygonHover: p => {
-        if (!p) { tip.style.opacity = '0'; return; }
+        if (!p) return;
         const n = p.properties.name;
-        if (countryFill(n) === BASE_FILL) { tip.style.opacity = '0'; return; }
-        const evts = offerings.filter(o => o.country === n && o.category === 'event' && state.cats.has('event')).length;
-        const gths = offerings.filter(o => o.country === n && o.category === 'gathering' && state.cats.has('gathering')).length;
-        let details = [];
-        if (evts) details.push(`${evts} event${evts!==1?'s':''}`);
-        if (gths) details.push(`${gths} gathering${gths!==1?'s':''}`);
-        tip.innerHTML = `<strong style="font-family:'Playfair Display',serif;">${n}</strong><br><span style="font-size:11.5px;color:rgba(232,220,200,0.58);">${details.join(', ')}</span>`;
-        tip.style.opacity = '1';
+        if (countryFill(n) === BASE_FILL) return;
       },
       onPolygonClick: p => {
         const offs = offerings.filter(o => o.country === p.properties.name && state.cats.has(o.category));
         if (offs.length) openDetail(offs[0]);
       },
-      onPointHover: p => {
-        if (!p) { tip.style.opacity = '0'; return; }
-        const catLabel = p.category === 'event' ? 'Event' : 'Gathering';
-        const artist = artists.find(a => a.id === p.artist);
-        tip.innerHTML = `
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:${catColors[p.category]};margin-bottom:4px;">${catLabel}</div>
-          <strong style="font-family:'Playfair Display',serif;font-size:14px;line-height:1.3;display:block;">${p.title}</strong>
-          <span style="font-size:12px;color:rgba(232,220,200,0.7);display:block;margin-top:3px;">${p.member} -- ${p.country}</span>
-          <span style="font-size:11px;color:rgba(232,220,200,0.5);display:block;margin-top:2px;">${p.date} -- ${p.price}</span>
-          <span style="font-size:11.5px;color:rgba(232,220,200,0.42);display:block;margin-top:4px;line-height:1.4;">${p.desc}</span>
-          ${artist ? `<span style="font-size:11px;color:${catColors[p.category]};display:block;margin-top:5px;">by ${artist.name}</span>` : ''}
-          <span style="font-size:9px;color:rgba(232,220,200,0.25);display:block;margin-top:6px;text-transform:uppercase;letter-spacing:0.1em;">click for details</span>
-        `;
-        tip.style.opacity = '1';
-      },
-      onPointClick: d => openDetail(d),
+      onPointHover: () => {},
+      onPointClick: () => {},
     });
   }
   refreshGlobe();
